@@ -5,7 +5,7 @@
     object-position: 50% 50%; /* Центр изображения */
 }
 .carousel_text {
-    background-color: rgba(0, 0, 0, 0.8); /* Черный фон с прозрачностью 50% */
+    background-color: rgba(0, 0, 0, 0.6); /* Черный фон с прозрачностью 50% */
     color: white;
 }
 
