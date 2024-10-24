@@ -1,0 +1,45 @@
+<!doctype html>
+
+    <html lang="ru" data-bs-theme="dark">
+    <th:block th:insert="~{blocks/head_block :: head}"></th:block>
+    <style>
+        .form-signin {
+            width: 100%;
+            max-width: 330px;
+            padding: 15px;
+            margin: auto;
+            margin-top: 5%;
+
+        }
+    </style>
+<body class="text-center d-flex flex-column min-vh-100" cz-shortcut-listen="true" >
+
+
+
+    <th:block th:insert="~{blocks/header :: header}"></th:block>
+
+<main class="form-signin">
+    <form>
+<!--        <img class="mb-4" src="/docs/5.0/assets/brand/bootstrap-logo.svg" alt="" width="72" height="57">-->
+        <h1 class="h3 mb-3 fw-normal">Войти</h1>
+
+        <div class="form-floating mb-2">
+            <input type="email" class="form-control" id="floatingInput" placeholder="name@example.com">
+            <label for="floatingInput">Email address</label>
+        </div>
+        <div class="form-floating mb-2">
+            <input type="password" class="form-control" id="floatingPassword" placeholder="Password">
+            <label for="floatingPassword">Password</label>
+        </div>
+        <button class="w-100 btn btn-lg btn-primary mb-2" type="submit">Войти</button>
+        <p class="mb-2 text-muted">Или</p>
+    </form>
+    <a th:href="@{/register}" class="w-100 btn btn-lg btn-primary">Зарегистрироваться</a>
+</main>
+<th:block th:insert="~{blocks/footer.html}"></th:block>
+
+
+
+
+</body>
+</html>

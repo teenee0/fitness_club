@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="ru" data-bs-theme="dark">
+<th:block th:insert="~{blocks/head_block :: head}"></th:block>
+<body class="d-flex flex-column min-vh-100">
+
+<!-- Вставка хедера -->
+<th:block th:insert="~{blocks/header :: header}"></th:block>
+
+<main class="container mt-5">
+    <h1 class="text-center mb-4">Фитнес Программы</h1>
+    <div class="row">
+        <div class="col-md-6">
+            <img th:src="@{/img/fitness-page-carousel-1.jpg}" class="img-fluid rounded mb-4" alt="Фитнес программы">
+        </div>
+        <div class="col-md-6">
+            <p class="lead">Наши фитнес программы включают в себя широкий спектр занятий: от кардио тренировок до функциональных упражнений. Присоединяйтесь и улучшайте свою физическую форму!</p>
+            <ul class="list-unstyled">
+                <li><i class="bi bi-check-circle-fill"></i> Кардио тренировки</li>
+                <li><i class="bi bi-check-circle-fill"></i> Силовые тренировки</li>
+                <li><i class="bi bi-check-circle-fill"></i> Йога и пилатес</li>
+                <li><i class="bi bi-check-circle-fill"></i> Персональные тренировки</li>
+            </ul>
+<!--            <a href="#" class="btn btn-primary mt-3">Записаться на тренировку</a>-->
+        </div>
+    </div>
+    <h1 class="text-center mb-4 mt-3">Тренерский состав</h1>
+    <div class="row">
+        <!-- Карточка тренера -->
+        <div class="col-md-4">
+            <div class="card mb-4 shadow-sm">
+                <img src="/img/trainer1.jpg" class="card-img-top" alt="Тренер 1">
+                <div class="card-body">
+                    <h5 class="card-title">Иван Иванов</h5>
+                    <p class="card-text">Специалист по силовым тренировкам и кардио. Иван имеет более 10 лет опыта в фитнес индустрии.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+<!-- Вставка футера -->
+<th:block th:insert="~{blocks/footer :: footer}"></th:block>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

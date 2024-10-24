@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="ru" data-bs-theme="dark">
+<th:block th:insert="~{blocks/head_block :: head}"></th:block>
+<body>
+
+<!-- Вставка хедера -->
+<th:block th:insert="~{blocks/header :: header}"></th:block>
+
+<main class="container mt-5">
+    <h1 class="text-center mb-4">Наши тарифы</h1>
+    <div class="row row-cols-1 row-cols-md-3 mb-3 text-center">
+        <div class="col">
+            <div class="card mb-4 rounded-3 shadow-sm border-primary">
+                <div class="card-header py-3 text-bg-primary border-primary">
+                    <h4 class="my-0 fw-normal">Студент</h4>
+                </div>
+                <div class="card-body">
+                    <h1 class="card-title pricing-card-title">1 500 ₽<small class="text-body-secondary fw-light">/мес</small></h1>
+                    <ul class="list-unstyled mt-3 mb-4">
+                        <li>Безлимитное посещение одного зала</li>
+                        <li>Анализ состава тела InBody</li>
+                    </ul>
+                    <button type="button" class="w-100 btn btn-lg btn-outline-primary">Записаться</button>
+                </div>
+            </div>
+        </div>
+        <div class="col">
+            <div class="card mb-4 rounded-3 shadow-sm border-primary">
+                <div class="card-header py-3 text-bg-primary border-primary">
+                    <h4 class="my-0 fw-normal">Pro</h4>
+                </div>
+                <div class="card-body">
+                    <h1 class="card-title pricing-card-title">2 000 ₽<small class="text-body-secondary fw-light">/мес</small></h1>
+                    <ul class="list-unstyled mt-3 mb-4">
+                        <li>Доступ ко всем клубам сети</li>
+                        <li>Анализ состава тела InBody</li>
+                    </ul>
+                    <button type="button" class="w-100 btn btn-lg btn-outline-primary">Записаться</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+<!-- Вставка футера -->
+<th:block th:insert="~{blocks/footer :: footer}"></th:block>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
