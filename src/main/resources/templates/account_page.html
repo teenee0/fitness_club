@@ -12,46 +12,57 @@
     <!-- Информация о клиенте -->
     <div class="card mb-4">
         <div class="card-body">
-            <h2 class="card-title">Привет, Иван Иванов!</h2>
+            <h2 class="card-title">Привет, <span th:text="${user.name} + ' ' + ${user.surname}">Имя Фамилия</span>!</h2>
             <p class="card-text">
-                <strong>Тариф:</strong> Pro <br>
-                <strong>Email:</strong> ivan.ivanov@example.com <br>
-                <strong>Дата покупки абонемента:</strong> 01 Октября 2024 <br>
-                <strong>Дата окончания абонемента:</strong> 01 Октября 2025 <br>
-                <strong>Ваш тренер:</strong> Анна Петрова
+                <strong>Номер телефона:</strong> <span th:text="${user.phoneNumber}">+7 000 000 00 00</span> <br>
+                <strong>Дата регистрации:</strong> <span th:text="${user.registrationDate}">01 Января 2024</span> <br>
             </p>
         </div>
     </div>
 
-    <!-- Расписание тренировок, на которые клиент записан -->
-    <h2 class="text-center mb-4">Ваши тренировки</h2>
-    <table class="table table-bordered table-hover">
-        <thead class="table-dark">
-        <tr>
-            <th scope="col">Дата</th>
-            <th scope="col">Время</th>
-            <th scope="col">Тренировка</th>
-            <th scope="col">Тренер</th>
-            <th scope="col">Статус</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr>
-            <td>25 Октября 2024</td>
-            <td>10:00 - 11:00</td>
-            <td>Кардио</td>
-            <td>Анна Петрова</td>
-            <td><span class="badge bg-success">Записан</span></td>
-        </tr>
-        <tr>
-            <td>27 Октября 2024</td>
-            <td>12:00 - 13:00</td>
-            <td>Силовая тренировка</td>
-            <td>Анна Петрова</td>
-            <td><span class="badge bg-success">Записан</span></td>
-        </tr>
-        </tbody>
-    </table>
+    <!-- Информация об абонементе -->
+
+    <div th:if="${subscription != null}" class="card mb-4">
+        <div class="card-body">
+            <h2 class="card-title">Абонемент</h2>
+            <p class="card-text">
+                <strong>Тип:</strong> <span th:text="${subscription.subscription.subscription_type}">Basic</span> <br>
+                <strong>Дата покупки:</strong> <span th:text="${subscription.purchaseDate}">01 Января 2024</span> <br>
+                <strong>Дата окончания:</strong> <span th:text="${subscription.endDate}">01 Января 2025</span> <br>
+                <strong>Клуб:</strong> <span th:text="${subscription.club.name}">Клуб не указан</span> <br>
+                <strong>Расположение:</strong> <span th:text="${subscription.club.location}">Клуб не указан</span> <br>
+            </p>
+        </div>
+    </div>
+
+    <!-- Информация о тренере -->
+    <div th:if="${trainer != null and trainer.size() > 0}" class="card mb-4">
+
+        <div class="card-body">
+            <h3 class="card-title ml-2">Ваши тренеры</h3>
+            <div  th:each="trainer : ${trainer}">
+                <p class="card-text">
+                    <strong>Имя:</strong> <span th:text="${trainer.name} + ' ' + ${trainer.surname}">Иван Иванов</span> <br>
+                    <strong>Специализация:</strong> <span th:text="${trainer.specialization}">Фитнес</span> <br>
+                    <strong>Опыт работы:</strong> <span th:text="${trainer.yearsOfExperience}">5</span> лет <br>
+                    <strong>Контактный номер:</strong> <span th:text="${trainer.number}">+7 000 000 00 00</span> <br>
+                </p><br>
+            </div>
+        </div>
+    </div>
+    <div th:unless="${trainer != null and trainer.size() > 0}" class="card mb-4">
+        <div class="card-body">
+            <h3 class="card-title ml-2">Тренеры не найдены</h3>
+                <p class="card-text">
+                    Похоже, у вас ещё нет тренеров. Выберите подходящего в личном кабинете!
+                </p><br>
+        </div>
+    </div>
+
+    <!-- Кнопка выхода -->
+    <form th:action="@{/logout}" method="post">
+        <button type="submit" class="btn btn-danger">Выйти</button>
+    </form>
 </main>
 
 <!-- Вставка футера -->

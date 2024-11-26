@@ -1,45 +1,54 @@
 <!doctype html>
+<html lang="ru" data-bs-theme="dark">
+<th:block th:insert="~{blocks/head_block :: head}"></th:block>
+<style>
+    .form-signin {
+        width: 100%;
+        max-width: 330px;
+        padding: 15px;
+        margin: auto;
+        margin-top: 5%;
+    }
+</style>
+<body class="text-center d-flex flex-column min-vh-100">
 
-    <html lang="ru" data-bs-theme="dark">
-    <th:block th:insert="~{blocks/head_block :: head}"></th:block>
-    <style>
-        .form-signin {
-            width: 100%;
-            max-width: 330px;
-            padding: 15px;
-            margin: auto;
-            margin-top: 5%;
-
-        }
-    </style>
-<body class="text-center d-flex flex-column min-vh-100" cz-shortcut-listen="true" >
-
-
-
-    <th:block th:insert="~{blocks/header :: header}"></th:block>
+<th:block th:insert="~{blocks/header :: header}"></th:block>
 
 <main class="form-signin">
-    <form>
-<!--        <img class="mb-4" src="/docs/5.0/assets/brand/bootstrap-logo.svg" alt="" width="72" height="57">-->
+    <!-- Форма входа -->
+    <form th:action="@{/login}" method="post">
         <h1 class="h3 mb-3 fw-normal">Войти</h1>
 
+        <!-- Поле ввода номера телефона -->
         <div class="form-floating mb-2">
-            <input type="email" class="form-control" id="floatingInput" placeholder="name@example.com">
-            <label for="floatingInput">Email address</label>
+            <input type="text" name="phoneNumber" class="form-control" id="floatingPhoneNumber" placeholder="Номер телефона" required>
+            <label for="floatingPhoneNumber">Номер телефона</label>
         </div>
+
+        <!-- Поле ввода пароля -->
         <div class="form-floating mb-2">
-            <input type="password" class="form-control" id="floatingPassword" placeholder="Password">
-            <label for="floatingPassword">Password</label>
+            <input type="password" name="password" class="form-control" id="floatingPassword" placeholder="Пароль" required>
+            <label for="floatingPassword">Пароль</label>
         </div>
+
+        <!-- Вывод ошибок и сообщений -->
+        <div th:if="${error}" class="alert alert-danger" role="alert">
+            Неверный номер телефона или пароль.
+        </div>
+        <div th:if="${message}" class="alert alert-success" role="alert">
+            <span th:text="${message}"></span>
+        </div>
+
+        <!-- Кнопка входа -->
         <button class="w-100 btn btn-lg btn-primary mb-2" type="submit">Войти</button>
         <p class="mb-2 text-muted">Или</p>
     </form>
+
+    <!-- Ссылка на регистрацию -->
     <a th:href="@{/register}" class="w-100 btn btn-lg btn-primary">Зарегистрироваться</a>
 </main>
-<th:block th:insert="~{blocks/footer.html}"></th:block>
 
-
-
+<th:block th:insert="~{blocks/footer :: footer}"></th:block>
 
 </body>
 </html>

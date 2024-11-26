@@ -1,5 +1,4 @@
 <!doctype html>
-
 <html lang="ru" data-bs-theme="dark">
 <th:block th:insert="~{blocks/head_block :: head}"></th:block>
 <style>
@@ -9,41 +8,63 @@
         padding: 15px;
         margin: auto;
         margin-top: 5%;
-
+    }
+    .success-message {
+        color: green;
+        font-weight: bold;
+    }
+    .error-message {
+        color: red;
+        font-weight: bold;
     }
 </style>
-<body class="text-center d-flex flex-column min-vh-100" cz-shortcut-listen="true" >
-
-
+<body class="text-center d-flex flex-column min-vh-100">
 
 <th:block th:insert="~{blocks/header :: header}"></th:block>
 
 <main class="form-signin">
-    <form>
-        <!--        <img class="mb-4" src="/docs/5.0/assets/brand/bootstrap-logo.svg" alt="" width="72" height="57">-->
+    <form th:action="@{/register}" method="post">
         <h1 class="h3 mb-3 fw-normal">Регистрация</h1>
 
+        <!-- Отображение сообщений -->
+        <p class="success-message" th:if="${message}" th:text="${message}"></p>
+        <p class="error-message" th:if="${error}" th:text="${error}"></p>
+
         <div class="form-floating mb-2">
-            <input type="email" class="form-control" id="floatingInput" placeholder="name@example.com">
-            <label for="floatingInput">Email address</label>
+            <input type="text" name="phone_number" class="form-control" id="floatingUsername" placeholder="Номер телефона" required>
+            <label for="floatingUsername">Номер телефона</label>
+        </div>
+
+        <div class="form-floating mb-2">
+            <input type="text" name="name" class="form-control" id="floatingName" placeholder="Введите имя" required>
+            <label for="floatingName">Имя</label>
+        </div>
+
+        <!-- Поле для фамилии -->
+        <div class="form-floating mb-2">
+            <input type="text" name="surname" class="form-control" id="floatingSurname" placeholder="Введите фамилию" required>
+            <label for="floatingSurname">Фамилия</label>
+        </div>
+
+        <div class="form-floating mb-2">
+            <input type="password" name="password" class="form-control" id="floatingPassword1" placeholder="Пароль" required>
+            <label for="floatingPassword1">Пароль</label>
         </div>
         <div class="form-floating mb-2">
-            <input type="password" class="form-control" id="floatingPassword1" placeholder="Password1">
-            <label for="floatingPassword1">Password</label>
-        </div>
-        <div class="form-floating mb-2">
-            <input type="password" class="form-control" id="floatingPassword2" placeholder="Password2">
-            <label for="floatingPassword2">Password</label>
+            <select name="role" class="form-control" id="floatingRole" required>
+                <option value="CLIENT">Клиент</option>
+                <option value="TRAINER">Тренер</option>
+                <option value="ADMIN">Администратор</option>
+            </select>
+            <label for="floatingRole">Роль</label>
         </div>
         <button class="w-100 btn btn-lg btn-primary mb-2" type="submit">Зарегистрироваться</button>
         <p class="mb-2 text-muted">Или</p>
     </form>
     <a th:href="@{/login}" class="w-100 btn btn-lg btn-primary">Войти</a>
 </main>
-<th:block th:insert="~{blocks/footer.html}"></th:block>
 
-
-
+<th:block th:insert="~{blocks/footer :: footer}"></th:block>
 
 </body>
 </html>

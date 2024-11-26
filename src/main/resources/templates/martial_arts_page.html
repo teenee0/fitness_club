@@ -15,45 +15,49 @@
         <div class="col-md-6">
             <p class="lead">Наши занятия по единоборствам помогут вам улучшить технику боя, освоить новые приемы и повысить выносливость. Тренировки доступны как для новичков, так и для опытных бойцов.</p>
             <ul class="list-unstyled">
-                <li><i class="bi bi-check-circle-fill"></i> Бокс</li>
-                <li><i class="bi bi-check-circle-fill"></i> Кикбоксинг</li>
-                <li><i class="bi bi-check-circle-fill"></i> Дзюдо</li>
-                <li><i class="bi bi-check-circle-fill"></i> Персональные тренировки</li>
+                <li  th:each="subcategory : ${subcategories}" ><p class="badge bg-danger" th:text="${subcategory.name}"></p></li>
             </ul>
-            <a href="#" class="btn btn-primary mt-3">Записаться на тренировку</a>
+
         </div>
     </div>
     <h1 class="text-center mb-4 mt-3">Тренерский состав</h1>
     <div class="row">
         <!-- Карточка тренера -->
-        <div class="col-md-4">
-            <div class="card mb-4 shadow-sm">
-                <img src="/img/trainer1.jpg" class="card-img-top" alt="Тренер 1">
-                <div class="card-body">
-                    <h5 class="card-title">Иван Иванов</h5>
-                    <p class="card-text">Специалист по силовым тренировкам и кардио. Иван имеет более 10 лет опыта в фитнес индустрии.</p>
+        <div class="col-md-4" th:each="trainer : ${fitnessTrainers}">
+            <a th:href="@{/trainers/{id}(id=${trainer.id})}" style="text-decoration: none; color: inherit;">
+                <div class="card mb-4 shadow-sm" style="height: 100%; display: flex; flex-direction: column;">
+                    <!-- Динамическое изображение -->
+                    <img class="card-img-top" th:src="@{${trainer.photoPath}}" style="height: 300px; object-fit: cover;">
+
+                    <div class="card-body" style="display: flex; flex-direction: column; justify-content: space-between;">
+                        <!-- Имя тренера -->
+                        <h5 class="card-title" th:text="${trainer.name} + ' ' + ${trainer.surname}" style="margin-bottom: 10px;">Имя Фамилия</h5>
+
+                        <!-- Описание тренера -->
+                        <p class="card-text" th:text="${trainer.description}" style="margin-bottom: 10px;">Описание тренера</p>
+
+                        <!-- Стаж тренера -->
+                        <p class="card-text" style="margin-bottom: 10px;">Стаж:
+                            <span class="badge bg-success" th:text="${trainer.yearsOfExperience} + ' лет'" style="font-size: 90%;"></span>
+                        </p>
+
+                        <!-- Подкатегории тренера -->
+                        <div class="card-text" style="min-height: 60px;">
+                        <span th:each="ts, iterStat : ${trainer.trainerSubcategories}"
+                              th:if="${iterStat.index < 5}"
+                              class="badge bg-success"
+                              th:text="${ts.subcategory.name}"
+                              style="margin-right: 5px; margin-bottom: 5px;">
+                        </span>
+                            <!-- Пустые места, если навыков меньше 5 -->
+                            <span th:each="emptySlot, iterStat : ${#numbers.sequence(trainer.trainerSubcategories.size(), 5)}"
+                                  style="margin-right: 5px; margin-bottom: 5px; visibility: hidden;">
+
+                        </span>
+                        </div>
+                    </div>
                 </div>
-            </div>
-        </div>
-        <!-- Карточка тренера -->
-        <div class="col-md-4">
-            <div class="card mb-4 shadow-sm">
-                <img src="/img/trainer2.jpg" class="card-img-top" alt="Тренер 2">
-                <div class="card-body">
-                    <h5 class="card-title">Анна Петрова</h5>
-                    <p class="card-text">Анна - эксперт по йоге и пилатесу. Она поможет вам достичь гибкости и гармонии с телом.</p>
-                </div>
-            </div>
-        </div>
-        <!-- Карточка тренера -->
-        <div class="col-md-4">
-            <div class="card mb-4 shadow-sm">
-                <img src="/img/trainer3.jpg" class="card-img-top" alt="Тренер 3">
-                <div class="card-body">
-                    <h5 class="card-title">Максим Сергеев</h5>
-                    <p class="card-text">Тренер по боевым искусствам с многолетним опытом. Максим тренирует как профессионалов, так и новичков.</p>
-                </div>
-            </div>
+            </a>
         </div>
     </div>
     <div class="container mt-5">

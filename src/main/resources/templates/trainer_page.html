@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="ru" data-bs-theme="dark">
+<th:block th:insert="~{blocks/head_block :: head}"></th:block>
+<style>
+    .form-signin {
+        width: 100%;
+        max-width: 330px;
+        padding: 15px;
+        margin: auto;
+        margin-top: 5%;
+    }
+</style>
+<body class="text-center d-flex flex-column min-vh-100">
+
+<th:block th:insert="~{blocks/header :: header}"></th:block>
+<main>
+    <h1 class="text-center mb-4" th:text="${trainer.name} + ' ' + ${trainer.surname}"></h1>
+    <div class="row">
+        <div class="col-md-6">
+            <img th:src="@{${trainer.photoPath}}" class="img-fluid rounded mb-4">
+        </div>
+        <div class="col-md-6">
+            <p class="lead" th:text="${trainer.description}"></p>
+            <p class="lead">Навыки:</p>
+            <ul class="list-unstyled">
+                <span th:each="subcategory : ${trainer.subcategories}">
+                <li><i class="bi bi-check-circle-fill" th:text="${subcategory.name}"></i></li>
+                </span>>
+            </ul>
+        </div>
+    </div>
+</main>
+
+<th:block th:insert="~{blocks/footer :: footer}"></th:block>
+
+</body>
+</html>
