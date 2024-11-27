@@ -27,7 +27,7 @@
             <a th:href="@{/trainers/{id}(id=${trainer.id})}" style="text-decoration: none; color: inherit;">
                 <div class="card mb-4 shadow-sm" style="height: 100%; display: flex; flex-direction: column;">
                     <!-- Динамическое изображение -->
-                    <img class="card-img-top" th:src="@{${trainer.photoPath}}" style="height: 300px; object-fit: cover;">
+                    <img class="card-img-top" th:src="@{/img/Trainers/__${trainer.photoPath}__}" style="height: 300px; object-fit: cover;">
 
                     <div class="card-body" style="display: flex; flex-direction: column; justify-content: space-between;">
                         <!-- Имя тренера -->

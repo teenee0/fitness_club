@@ -17,7 +17,7 @@
     <h1 class="text-center mb-4" th:text="${trainer.name} + ' ' + ${trainer.surname}"></h1>
     <div class="row">
         <div class="col-md-6">
-            <img th:src="@{${trainer.photoPath}}" class="img-fluid rounded mb-4">
+            <img class="card-img-top" th:src="@{/img/Trainers/__${trainer.photoPath}__}" style="height: 300px; object-fit: cover;">
         </div>
         <div class="col-md-6">
             <p class="lead" th:text="${trainer.description}"></p>
