@@ -44,11 +44,6 @@
                                           th:text="${trainer.description}"></textarea></td>
                         </tr>
                         <tr>
-                            <td>Специализация</td>
-                            <td><input th:value="${trainer.specialization}" type="text" class="form-control"
-                                       name="specialization" required></td>
-                        </tr>
-                        <tr>
                             <td>Стаж (лет)</td>
                             <td><input th:value="${trainer.yearsOfExperience}" type="number" class="form-control"
                                        name="yearsOfExperience" min="0"></td>
@@ -100,6 +95,11 @@
             <div class="text-center mt-4">
                 <button type="submit" class="btn btn-success">Сохранить изменения</button>
                 <a th:href="@{/admin/trainers}" class="btn btn-secondary">Отмена</a>
+                <form th:action="@{'/admin/trainers/delete/' + ${trainer.id}}" method="post" style="display: inline;">
+                    <input type="hidden" data-th-name="${_csrf.parameterName}"
+                           data-th-value="${_csrf.token}">
+                    <button class="btn btn-danger btn-sm" type="submit">Удалить</button>
+                </form>
             </div>
         </form>
 

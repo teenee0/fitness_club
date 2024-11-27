@@ -1,6 +1,7 @@
 package com.example.fitness_club.Models;
 
 import jakarta.persistence.*;
+import org.springframework.boot.context.properties.bind.DefaultValue;
 
 import java.util.List;
 
@@ -22,8 +23,9 @@ public class Trainers {
     @Column(nullable = false)
     private String Description;
 
+
     @Column(nullable = false)
-    private String specialization;
+    private String password;
 
     @Column(nullable = true)
     private Integer yearsOfExperience;
@@ -55,12 +57,12 @@ public class Trainers {
     public Trainers() {}
 
     // Конструкторы, геттеры, сеттер
-    public Trainers(String name, String surname, String number, String description, String specialization, Integer yearsOfExperience) {
+    public Trainers(String name, String surname, String number, String password, String description, Integer yearsOfExperience) {
         this.name = name;
         this.surname = surname;
         this.number = number;
+        this.password = password;
         this.Description = description;
-        this.specialization = specialization;
         this.yearsOfExperience = yearsOfExperience;
     }
 
@@ -104,12 +106,12 @@ public class Trainers {
         Description = description;
     }
 
-    public String getSpecialization() {
-        return specialization;
+    public String getPassword() {
+        return password;
     }
 
-    public void setSpecialization(String specialization) {
-        this.specialization = specialization;
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public Integer getYearsOfExperience() {

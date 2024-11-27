@@ -170,6 +170,48 @@ public class MainController {
         return "admin_panel_pages/admin_trainers";
 
     }
+
+    @GetMapping("/admin/trainers/add")
+    public String addTrainer(Model model) {
+        return "admin_panel_pages/trainer_create_page";
+    }
+
+    @PostMapping("/admin/trainers/add")
+    public String addTrainer(@RequestParam("photo") MultipartFile photo,
+                             @RequestParam("name") String name,
+                             @RequestParam("surname") String surname,
+                             @RequestParam("number") String phoneNumber,
+                             @RequestParam("password") String password,
+                             @RequestParam("description") String description,
+                             @RequestParam("yearsOfExperience") int yearsOfExperience){
+
+        Trainers trainer = new Trainers();
+        trainer.setName(name);
+        trainer.setSurname(surname);
+        trainer.setNumber(phoneNumber);
+        trainer.setPassword(password);
+        trainer.setDescription(description);
+        trainer.setYearsOfExperience(yearsOfExperience);
+        if (!photo.isEmpty()) {
+            try {
+                String fileName = "trn" + System.currentTimeMillis() + ".jpeg";
+                String uploadDir = "src/main/resources/static/img/Trainers";
+                Path uploadPath = Paths.get(uploadDir);
+
+                if (!Files.exists(uploadPath)) {
+                    Files.createDirectories(uploadPath);
+                }
+
+                Files.copy(photo.getInputStream(), uploadPath.resolve(fileName), StandardCopyOption.REPLACE_EXISTING);
+                trainer.setPhotoPath(fileName);
+            } catch (IOException e) {
+                return "redirect:/admin/trainers/add";
+            }
+        }
+        trainerRepository.save(trainer);
+        return "redirect:/admin/trainers";
+    }
+
     @GetMapping("/admin/trainers/{id}")
     public String adminTrainersPage(@PathVariable Long id, Model model) {
         Trainers trainer = trainerRepository.findById(id).orElse(null);
@@ -204,7 +246,6 @@ public class MainController {
             @RequestParam("surname") String surname,
             @RequestParam("number") String phoneNumber,
             @RequestParam("description") String description,
-            @RequestParam("specialization") String specialization,
             @RequestParam("yearsOfExperience") int yearsOfExperience,
             @RequestParam("photo") MultipartFile photo,
             @RequestParam(value = "addedSubcategories", required = false) String addedSubcategories,
@@ -223,7 +264,6 @@ public class MainController {
         trainer.setSurname(surname);
         trainer.setNumber(phoneNumber);
         trainer.setDescription(description);
-        trainer.setSpecialization(specialization);
         trainer.setYearsOfExperience(yearsOfExperience);
 
         // Обрабатываем фото
@@ -275,7 +315,12 @@ public class MainController {
         return "redirect:/admin/trainers/" + id;
     }
 
+    @PostMapping("/admin/trainers/delete/{id}")
+    public String deleteTrainer(@PathVariable Long id) {
+        trainerRepository.deleteById(id);
+        return "redirect:/admin/trainers";
 
+    }
 
 
     @GetMapping("/account")
