@@ -17,7 +17,7 @@ public class UserService {
         this.passwordEncoder = passwordEncoder;
     }
 
-    public void registerUser(String name, String surname, String phoneNumber, String password, Users.Role role) {
+    public void registerUser(String name, String surname, String phoneNumber, String password, Users.Role role,String email) {
         if (usersRepository.findByPhoneNumber(phoneNumber).isPresent()) {
             throw new RuntimeException("Пользователь с таким номером телефона уже существует!");
         }
@@ -27,7 +27,8 @@ public class UserService {
                 surname,
                 phoneNumber,
                 role,
-                encodedPassword);
+                encodedPassword,
+                email);
         usersRepository.save(user);
     }
 

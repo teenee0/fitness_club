@@ -6,6 +6,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface UserSubscriptionRepository extends JpaRepository<UserSubscription, Long> {
-    // Здесь вы можете добавить свои собственные методы для работы с данными
+    UserSubscription findByUserIdAndSubscriptionId(Long userId, int subscriptionId);
 }
 

@@ -2,6 +2,7 @@ package com.example.fitness_club.Models;
 
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 
 @Entity
 public class GroupSchedule {
@@ -11,86 +12,73 @@ public class GroupSchedule {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "group_info_id", nullable = false) // Связь с GroupInfo
-    private GroupInfo groupInfo;
-
-    @ManyToOne
-    @JoinColumn(name = "trainer_id", nullable = false) // Связь с Trainer
-    private Trainers trainer;
+    @JoinColumn(name = "trainer_subcategory_id", nullable = false)
+    private TrainerSubcategories trainerSubcategories;
 
     @Column(nullable = false)
-    private LocalDateTime startTime; // Время начала занятия
+    private LocalDateTime startTime;
 
     @Column(nullable = false)
-    private LocalDateTime endTime; // Время окончания занятия
+    private LocalTime duration;
 
     @Column(nullable = false)
-    private String hallNumber; // Номер зала
+    private String hallNumber;
 
     @Column(nullable = false)
-    private int maxParticipants; // Максимальное количество участников
+    private int maxParticipants;
 
     public GroupSchedule() {}
 
-    public GroupSchedule(GroupInfo groupInfo, Trainers trainer, LocalDateTime startTime, LocalDateTime endTime, String hallNumber, int maxParticipants) {
-        this.groupInfo = groupInfo;
-        this.trainer = trainer;
+    public GroupSchedule(LocalDateTime startTime, String hallNumber, int maxParticipants, LocalTime duration, TrainerSubcategories trainerSubcategories) {
         this.startTime = startTime;
-        this.endTime = endTime;
+        this.duration = duration;
         this.hallNumber = hallNumber;
         this.maxParticipants = maxParticipants;
+        this.trainerSubcategories = trainerSubcategories;
     }
 
     public Long getId() {
         return id;
     }
 
-    public GroupInfo getGroupInfo() {
-        return groupInfo;
+    public void setId(Long id) {
+        this.id = id;
     }
 
-    public Trainers getTrainer() {
-        return trainer;
+    public TrainerSubcategories getTrainerSubcategories() {
+        return trainerSubcategories;
+    }
+
+    public void setTrainerSubcategories(TrainerSubcategories trainerSubcategories) {
+        this.trainerSubcategories = trainerSubcategories;
     }
 
     public LocalDateTime getStartTime() {
         return startTime;
     }
 
-    public LocalDateTime getEndTime() {
-        return endTime;
+    public void setStartTime(LocalDateTime startTime) {
+        this.startTime = startTime;
+    }
+
+    public LocalTime getDuration() {
+        return duration;
+    }
+
+    public void setDuration(LocalTime duration) {
+        this.duration = duration;
     }
 
     public String getHallNumber() {
         return hallNumber;
     }
 
-    public int getMaxParticipants() {
-        return maxParticipants;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public void setGroupInfo(GroupInfo groupInfo) {
-        this.groupInfo = groupInfo;
-    }
-
-    public void setTrainer(Trainers trainer) {
-        this.trainer = trainer;
-    }
-
-    public void setStartTime(LocalDateTime startTime) {
-        this.startTime = startTime;
-    }
-
-    public void setEndTime(LocalDateTime endTime) {
-        this.endTime = endTime;
-    }
-
     public void setHallNumber(String hallNumber) {
         this.hallNumber = hallNumber;
+    }
+
+    public int getMaxParticipants() {
+        return maxParticipants;
     }
 
     public void setMaxParticipants(int maxParticipants) {

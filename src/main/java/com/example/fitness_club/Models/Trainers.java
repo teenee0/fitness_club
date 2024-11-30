@@ -36,8 +36,6 @@ public class Trainers {
     @OneToMany(mappedBy = "trainer", cascade = CascadeType.ALL)
     private List<UserTrainer> userTrainers; // Связь с таблицей UserTrainer
 
-    @OneToMany(mappedBy = "trainer", cascade = CascadeType.ALL)
-    private List<GroupSchedule> groupSchedules;
 
     @OneToMany(mappedBy = "trainer", cascade = CascadeType.ALL)
     private List<TrainerSubcategories> trainerSubcategories;
@@ -130,13 +128,6 @@ public class Trainers {
         this.userTrainers = userTrainers;
     }
 
-    public List<GroupSchedule> getGroupSchedules() {
-        return groupSchedules;
-    }
-
-    public void setGroupSchedules(List<GroupSchedule> groupSchedules) {
-        this.groupSchedules = groupSchedules;
-    }
 
     public List<TrainerSubcategories> getTrainerSubcategories() {
         return trainerSubcategories;

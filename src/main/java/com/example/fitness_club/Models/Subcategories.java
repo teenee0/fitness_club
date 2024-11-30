@@ -2,6 +2,7 @@ package com.example.fitness_club.Models;
 
 import jakarta.persistence.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -19,12 +20,15 @@ public class Subcategories {
     @OneToMany(mappedBy = "subcategory", cascade = CascadeType.ALL)
     private List<TrainerSubcategories> trainerSubcategories;
 
+
     public Subcategories() {}
 
-    public Subcategories(Long id, String name, Specializations specialization, List<Trainers> trainers) {
+
+    public Subcategories(Long id, String name, Specializations specialization, List<Trainers> trainers, List<GroupSchedule> groupSchedules) {
         this.id = id;
         this.name = name;
         this.specialization = specialization;
+        this.trainerSubcategories = new ArrayList<>();
 
     }
 
