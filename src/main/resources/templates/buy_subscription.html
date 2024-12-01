@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="ru" data-bs-theme="dark">
+<th:block th:insert="~{blocks/head_block :: head}"></th:block>
+<body class="d-flex flex-column min-vh-100">
+
+<!-- Вставка хедера -->
+<th:block th:insert="~{blocks/header :: header}"></th:block>
+
+<main class="container mt-5">
+    <h2>Выберите абонемент</h2>
+    <form th:action="@{/subscriptions/buy}" method="post">
+        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+
+        <div class="form-group mb-3">
+            <label for="subscription-select">Абонемент</label>
+            <select id="subscription-select" class="form-select" name="subscriptionId" required>
+                <option value="" disabled selected>Выберите абонемент</option>
+                <option th:each="subscription : ${subscriptions}"
+                        th:value="${subscription.id}"
+                        th:text="${subscription.subscription_type} + ' - ' + ${subscription.price} + ' ₽ ' + ${subscription.durationDays} + ' дн.'"></option>
+            </select>
+        </div>
+
+        <div class="form-group mb-3">
+            <label for="payment-method">Способ оплаты</label>
+            <select id="payment-method" class="form-select" name="paymentMethod" required>
+                <option value="" disabled selected>Выберите способ оплаты</option>
+                <option value="credit_card">Кредитная карта</option>
+                <option value="paypal">PayPal</option>
+                <option value="cash">Наличные</option>
+            </select>
+        </div>
+
+        <button type="submit" class="btn btn-primary w-100">Купить</button>
+    </form>
+</main>
+
+<!-- Вставка футера -->
+<th:block th:insert="~{blocks/footer :: footer}"></th:block>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

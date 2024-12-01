@@ -7,13 +7,8 @@ import com.example.fitness_club.Services.EmailService;
 import com.example.fitness_club.Services.PasswordGenerator;
 import com.example.fitness_club.Services.UserService;
 import com.example.fitness_club.Services.UserSubscriptionService;
-import jakarta.persistence.Id;
-import org.antlr.v4.runtime.misc.LogManager;
-import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -85,6 +80,8 @@ public class MainController {
     public String MartialArtsPage(Model model) {
         List<Subcategories> subcategories = subcategoryRepository.findBySpecializationId(1);
         List<Trainers> fitnessTrainers = trainerRepository.findTrainersBySpecialization("Единоборства");
+        List<GroupSchedule> groupSchedules = groupScheduleRepository.findBySpecialization("Единоборства");
+        model.addAttribute("groupSchedules", groupSchedules);
         model.addAttribute("fitnessTrainers", fitnessTrainers);
         model.addAttribute("subcategories", subcategories);
         return "martial_arts_page";
@@ -94,6 +91,8 @@ public class MainController {
     public String GroupProgramsPage(Model model) {
         List<Subcategories> subcategories = subcategoryRepository.findBySpecializationId(3);
         List<Trainers> fitnessTrainers = trainerRepository.findTrainersBySpecialization("Групповые программы");
+        List<GroupSchedule> groupSchedules = groupScheduleRepository.findBySpecialization("Групповые программы");
+        model.addAttribute("groupSchedules", groupSchedules);
         model.addAttribute("fitnessTrainers", fitnessTrainers);
         model.addAttribute("subcategories", subcategories);
         return "group_programs_page";
@@ -598,6 +597,33 @@ public class MainController {
         model.addAttribute("martialArtSchedules", martialArtSchedules);
         return "admin_panel_pages/admin_group_programs_page";
     }
+
+    @GetMapping("/admin/subcategories")
+    public String subcategoriesPage(Model model) {
+        List<Subcategories> subcategories = subcategoryRepository.findAll();
+        model.addAttribute("subcategories", subcategories);
+        List<Specializations> specializations = specializationsRepository.findAll();
+        model.addAttribute("specializations", specializations);
+        return "admin_panel_pages/admin_subcategories_page";
+    }
+
+    @PostMapping("/admin/subcategories/delete/{id}")
+    public String deleteSubcategories(@PathVariable Long id) {
+        subcategoryRepository.deleteById(id);
+        return "redirect:/admin/subcategories";
+    }
+
+    @PostMapping("/admin/add-subcategory")
+    public String addSubcategory(@RequestParam(name = "name") String name,
+                                 @RequestParam(name = "specialization") Long specializationId){
+        Subcategories subcategory = new Subcategories();
+        Specializations specialization = specializationsRepository.findById(specializationId).orElse(null);
+        subcategory.setName(name);
+        subcategory.setSpecialization(specialization);
+        subcategoryRepository.save(subcategory);
+        return "redirect:/admin/subcategories";
+    }
+
 
 
 

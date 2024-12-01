@@ -19,9 +19,7 @@ public class UserSubscription {
     @JoinColumn(name = "subscription_id", nullable = false)
     private Subscription subscription;
 
-    @ManyToOne
-    @JoinColumn(name = "club_id", nullable = true) // Внешний ключ на Club
-    private Club club; // Если null, значит доступ ко всем клубам
+
 
     @Column(nullable = false)
     private LocalDateTime purchaseDate;
@@ -42,13 +40,7 @@ public class UserSubscription {
         return purchaseDate.plusDays(subscription.getDurationDays());
     }
 
-    public Club getClub() {
-        return club;
-    }
 
-    public void setClub(Club club) {
-        this.club = club;
-    }
 
     public void setId(Long id) {
         this.id = id;

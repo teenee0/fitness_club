@@ -1,0 +1,192 @@
+<!doctype html>
+<html lang="ru" data-bs-theme="dark">
+<th:block th:insert="~{blocks/head_block :: head}"></th:block>
+<body class="d-flex flex-column min-vh-100">
+
+<!-- Вставка хедера -->
+<th:block th:insert="~{admin_panel_blocks/header :: header}"></th:block>
+
+<main>
+    <div class="container mt-4">
+        <h1 class="mb-4">Редактирование абонементов</h1>
+
+        <!-- Добавление нового абонемента -->
+        <h3>Добавить новый абонемент</h3>
+        <form th:action="@{/admin/subscriptions/add}" method="post" class="mb-5">
+            <div class="row mb-3">
+                <div class="col-md-4">
+                    <label for="subscriptionType" class="form-label">Тип абонемента</label>
+                    <input type="text" name="subscription_type" id="subscriptionType" class="form-control" required>
+                </div>
+                <div class="col-md-2">
+                    <label for="price" class="form-label">Цена</label>
+                    <input type="number" name="price" id="price" class="form-control" step="0.01" required>
+                </div>
+                <div class="col-md-2">
+                    <label for="unlimitedUse" class="form-label">Безлимит</label>
+                    <select name="unlimited_use" id="unlimitedUse" class="form-select">
+                        <option value="true">Да</option>
+                        <option value="false">Нет</option>
+                    </select>
+                </div>
+                <div class="col-md-2">
+                    <label for="mysteryBox" class="form-label">Mystery Box</label>
+                    <select name="mystery_box" id="mysteryBox" class="form-select">
+                        <option value="true">Да</option>
+                        <option value="false">Нет</option>
+                    </select>
+                </div>
+            </div>
+            <div class="row mb-3">
+                <div class="col-md-2">
+                    <label for="sauna" class="form-label">Сауна</label>
+                    <select name="sauna" id="sauna" class="form-select">
+                        <option value="true">Да</option>
+                        <option value="false">Нет</option>
+                    </select>
+                </div>
+                <div class="col-md-2">
+                    <label for="inbody" class="form-label">InBody</label>
+                    <select name="inbody" id="inbody" class="form-select">
+                        <option value="true">Да</option>
+                        <option value="false">Нет</option>
+                    </select>
+                </div>
+                <div class="col-md-2">
+                    <label for="martial_arts" class="form-label">InBody</label>
+                    <select name="martial_arts" id="martial_arts" class="form-select">
+                        <option value="true">Да</option>
+                        <option value="false">Нет</option>
+                    </select>
+                </div>
+                <div class="col-md-2">
+                    <label for="group_programs" class="form-label">InBody</label>
+                    <select name="group_programs" id="group_programs" class="form-select">
+                        <option value="true">Да</option>
+                        <option value="false">Нет</option>
+                    </select>
+                </div>
+                <div class="col-md-8">
+                    <label for="duration" class="form-label">Длительность (дней)</label>
+                    <input type="number" name="duration" id="duration" class="form-control" required>
+                </div>
+                <div class="col-md-2">
+                    <label for="is_on_main" class="form-label">Отображение на главной странице</label>
+                    <select name="is_on_main" id="is_on_main" class="form-select">
+                        <option value="true">Да</option>
+                        <option value="false">Нет</option>
+                    </select>
+                </div>
+                <div class="col-md-2">
+                    <label for="can_buy" class="form-label">Возможность покупки</label>
+                    <select name="can_buy" id="can_buy" class="form-select">
+                        <option value="true">Да</option>
+                        <option value="false">Нет</option>
+                    </select>
+                </div>
+                <div class="col-md-8">
+                    <label for="description" class="form-label">Описание</label>
+                    <textarea name="description" id="description" class="form-control" rows="3" required></textarea>
+                </div>
+            </div>
+            <button type="submit" class="btn btn-success">Добавить</button>
+        </form>
+    </div>
+    <div class="m-5">
+
+        <!-- Таблица для редактирования существующих абонементов -->
+        <h3>Существующие абонементы</h3>
+        <table class="table table-bordered">
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Тип</th>
+                <th>Цена</th>
+                <th>Безлимит</th>
+                <th>Mystery Box</th>
+                <th>Сауна</th>
+                <th>InBody</th>
+                <th>Единоборства</th>
+                <th>Груповые</th>
+                <th>Описание</th>
+                <th>Длительность (дней)</th>
+                <th>Отображение на главной странице</th>
+                <th>Возможность покупки</th>
+                <th>Действия</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="subscription : ${subscriptions}">
+                <form th:action="@{/admin/subscriptions/update/{id}(id=${subscription.id})}" method="post">
+                    <td th:text="${subscription.id}"></td>
+                    <td><input type="text" name="subscription_type" th:value="${subscription.subscription_type}" class="form-control" required></td>
+                    <td><input type="number" name="price" th:value="${subscription.price}" class="form-control" step="0.01" required></td>
+                    <td>
+                        <select name="unlimited_use" class="form-select">
+                            <option th:value="true" th:selected="${subscription.unlimited_use}">Да</option>
+                            <option th:value="false" th:selected="${!subscription.unlimited_use}">Нет</option>
+                        </select>
+                    </td>
+                    <td>
+                        <select name="mystery_box" class="form-select">
+                            <option th:value="true" th:selected="${subscription.mystery_box}">Да</option>
+                            <option th:value="false" th:selected="${!subscription.mystery_box}">Нет</option>
+                        </select>
+                    </td>
+                    <td>
+                        <select name="sauna" class="form-select">
+                            <option th:value="true" th:selected="${subscription.sauna}">Да</option>
+                            <option th:value="false" th:selected="${!subscription.sauna}">Нет</option>
+                        </select>
+                    </td>
+                    <td>
+                        <select name="inbody" class="form-select">
+                            <option th:value="true" th:selected="${subscription.inbody}">Да</option>
+                            <option th:value="false" th:selected="${!subscription.inbody}">Нет</option>
+                        </select>
+                    </td>
+                    <td>
+                        <select name="martial_arts" class="form-select">
+                            <option th:value="true" th:selected="${subscription.martial_arts}">Да</option>
+                            <option th:value="false" th:selected="${!subscription.martial_arts}">Нет</option>
+                        </select>
+                    </td>
+                    <td>
+                        <select name="group_programs" class="form-select">
+                            <option th:value="true" th:selected="${subscription.group_programs}">Да</option>
+                            <option th:value="false" th:selected="${!subscription.group_programs}">Нет</option>
+                        </select>
+                    </td>
+                    <td><textarea name="description" class="form-control" rows="2" th:text="${subscription.description}" required></textarea></td>
+                    <td><input type="number" name="duration" th:value="${subscription.durationDays}" class="form-control" required></td>
+                    <td>
+                        <select name="is_on_main" class="form-select">
+                            <option th:value="true" th:selected="${subscription.is_on_main}">Да</option>
+                            <option th:value="false" th:selected="${!subscription.is_on_main}">Нет</option>
+                        </select>
+                    </td>
+                    <td>
+                        <select name="can_buy" class="form-select">
+                            <option th:value="true" th:selected="${subscription.can_buy}">Да</option>
+                            <option th:value="false" th:selected="${!subscription.can_buy}">Нет</option>
+                        </select>
+                    </td>
+                    <td>
+                        <button type="submit" class="btn btn-primary btn-sm">Сохранить</button>
+                        <a th:href="@{/admin/subscriptions/delete/{id}(id=${subscription.id})}" class="btn btn-danger btn-sm">Удалить</a>
+                    </td>
+                </form>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+</main>
+
+<th:block th:insert="~{blocks/footer :: footer}"></th:block>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+
+</body>
+</html>

@@ -145,7 +145,7 @@
                     <select name="subscriptionId" class="form-select me-2" required>
                         <option value="" selected disabled>Выберите абонемент</option>
                         <option th:each="subscription : ${allSubscriptions}" th:value="${subscription.id}"
-                                th:text="${subscription.subscription_type}"></option>
+                                th:text="${subscription.subscription_type + ' ' + subscription.durationDays + ' дней'}"></option>
                     </select>
                     <button type="submit" class="btn btn-primary mb-2">Добавить абонемент</button>
                 </form>

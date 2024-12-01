@@ -1,7 +1,26 @@
 <!doctype html>
-</html>
+
 <html lang="ru" data-bs-theme="dark">
     <th:block th:insert="~{blocks/head_block :: head}"></th:block>
+    <style>
+        .card-body ul {
+            text-align: left; /* Выровнять текст по левому краю */
+            padding-left: 0; /* Убрать отступы списка */
+        }
+
+        .card-body li {
+            list-style: none; /* Убрать стандартные маркеры списка */
+            margin-bottom: 10px; /* Добавить немного пространства между пунктами списка */
+            display: flex;
+            align-items: center;
+        }
+
+        .card-body li img {
+            margin-right: 10px; /* Добавить отступ между иконкой и текстом */
+        }
+
+    </style>
+</html>
 <body cz-shortcut-listen="true" class="d-flex flex-column min-vh-100">
 
 <th:block th:insert="~{blocks/header :: header}"></th:block>
@@ -20,7 +39,7 @@
             <div class="carousel-item">
                 <img class="carousel_img" th:src='@{/img/fitness-page-carousel-2.jpg}'  alt="Image 2">
                 <div class="carousel-caption">
-                    <h1 class="carousel_text">Скидки молодежи москвы</h1>
+                    <h1 class="carousel_text">Абонемент для студентов</h1>
 
                 </div>
             </div>
@@ -52,64 +71,50 @@
     </div>
 
     <div class="container py-3 mt-4">
-        <div class="row row-cols-1 row-cols-md-3 mb-3 text-center">
-            <div class="col">
+        <div class="row row-cols-1 row-cols-md-3 mb-3">
+            <div class="col" th:each="subscription : ${subscriptions}">
                 <div class="card mb-4 rounded-3 shadow-sm border-primary">
                     <div class="card-header py-3 text-bg-primary border-primary">
-                        <h4 class="my-0 fw-normal">Студент</h4>
+                        <h4 class="my-0 fw-normal" th:text="${subscription.subscription_type}">Название</h4>
                     </div>
                     <div class="card-body">
-                        <h1 class="card-title pricing-card-title">1 500 ₽<small class="text-body-secondary fw-light">/мес</small></h1>
+                        <h1 class="card-title pricing-card-title">
+                            <span th:text="${subscription.price}">0</span> ₽
+                            <small class="text-body-secondary fw-light">/мес</small>
+                        </h1>
                         <ul class="list-unstyled mt-3 mb-4">
-                            <li><img th:src="@{/img/sucsess.png}" height="auto" width="25px">Безлимитное посещение одного зала</li>
-                            <li><img th:src="@{/img/sucsess.png}" height="auto" width="25px">Mystery Box</li>
-                            <li><img th:src="@{/img/sucsess.png}" height="auto" width="25px">Анализ состава тела InBody</li>
-                            <li><img th:src="@{/img/sucsess.png}" height="auto" width="25px">Мобильное приложение</li>
-                            <li><img th:src="@{/img/close.png}" height="auto" width="20px">Доступ во все клубы сети</li>
-                            <li><img th:src="@{/img/close.png}" height="auto" width="20px">Доступ для друзей</li>
-                            <li><img th:src="@{/img/close.png}" height="auto" width="20px">Семейный доступ</li>
+                            <li>
+                                <img th:src="@{/img/sucsess.png}" th:if="${subscription.unlimited_use}" height="auto" width="25px">
+                                <img th:src="@{/img/close.png}" th:if="${!subscription.unlimited_use}" height="auto" width="20px">
+                                Безлимитное посещение одного зала
+                            </li>
+                            <li>
+                                <img th:src="@{/img/sucsess.png}" th:if="${subscription.mystery_box}" height="auto" width="25px">
+                                <img th:src="@{/img/close.png}" th:if="${!subscription.mystery_box}" height="auto" width="20px">
+                                Mystery Box
+                            </li>
+                            <li>
+                                <img th:src="@{/img/sucsess.png}" th:if="${subscription.inbody}" height="auto" width="25px">
+                                <img th:src="@{/img/close.png}" th:if="${!subscription.inbody}" height="auto" width="20px">
+                                Анализ состава тела InBody
+                            </li>
+                            <li>
+                                <img th:src="@{/img/sucsess.png}" th:if="${subscription.sauna}" height="auto" width="25px">
+                                <img th:src="@{/img/close.png}" th:if="${!subscription.sauna}" height="auto" width="20px">
+                                Сауна
+                            </li>
+                            <li>
+                                <img th:src="@{/img/sucsess.png}" th:if="${subscription.martial_arts}" height="auto" width="25px">
+                                <img th:src="@{/img/close.png}" th:if="${!subscription.martial_arts}" height="auto" width="20px">
+                                Единоборства
+                            </li>
+                            <li>
+                                <img th:src="@{/img/sucsess.png}" th:if="${subscription.group_programs}" height="auto" width="25px">
+                                <img th:src="@{/img/close.png}" th:if="${!subscription.group_programs}" height="auto" width="20px">
+                                Групповые программы
+                            </li>
                         </ul>
-                        <button type="button" class="w-100 btn btn-lg btn-outline-primary">Купить</button>
-                    </div>
-                </div>
-            </div>
-            <div class="col">
-                <div class="card mb-4 rounded-3 shadow-sm border-primary">
-                    <div class="card-header py-3 text-bg-primary border-primary">
-                        <h4 class="my-0 fw-normal">Pro</h4>
-                    </div>
-                    <div class="card-body">
-                        <h1 class="card-title pricing-card-title">2 000 ₽<small class="text-body-secondary fw-light">/мес</small></h1>
-                        <ul class="list-unstyled mt-3 mb-4">
-                            <li><img th:src="@{/img/sucsess.png}" height="auto" width="25px">Безлимитное посещение одного зала</li>
-                            <li><img th:src="@{/img/sucsess.png}" height="auto" width="25px">Mystery Box</li>
-                            <li><img th:src="@{/img/sucsess.png}" height="auto" width="25px">Анализ состава тела InBody</li>
-                            <li><img th:src="@{/img/sucsess.png}" height="auto" width="25px">Мобильное приложение</li>
-                            <li><img th:src="@{/img/sucsess.png}" height="auto" width="20px">Доступ во все клубы сети</li>
-                            <li><img th:src="@{/img/sucsess.png}" height="auto" width="20px">Доступ для друзей</li>
-                            <li><img th:src="@{/img/sucsess.png}" height="auto" width="20px">Семейный доступ</li>
-                        </ul>
-                        <button type="button" class="w-100 btn btn-lg btn-outline-primary">Купить</button>
-                    </div>
-                </div>
-            </div>
-            <div class="col">
-                <div class="card mb-4 rounded-3 shadow-sm border-primary">
-                    <div class="card-header py-3 text-bg-primary border-primary">
-                        <h4 class="my-0 fw-normal">Стандарт</h4>
-                    </div>
-                    <div class="card-body">
-                        <h1 class="card-title pricing-card-title">1 800 ₽<small class="text-body-secondary fw-light">/мес</small></h1>
-                        <ul class="list-unstyled mt-3 mb-4">
-                            <li><img th:src="@{/img/sucsess.png}" height="auto" width="25px">Безлимитное посещение одного зала</li>
-                            <li><img th:src="@{/img/sucsess.png}" height="auto" width="25px">Mystery Box</li>
-                            <li><img th:src="@{/img/sucsess.png}" height="auto" width="25px">Анализ состава тела InBody</li>
-                            <li><img th:src="@{/img/sucsess.png}" height="auto" width="25px">Мобильное приложение</li>
-                            <li><img th:src="@{/img/close.png}" height="auto" width="20px">Доступ во все клубы сети</li>
-                            <li><img th:src="@{/img/close.png}" height="auto" width="20px">Доступ для друзей</li>
-                            <li><img th:src="@{/img/close.png}" height="auto" width="20px">Семейный доступ</li>
-                        </ul>
-                        <button type="button" class="w-100 btn btn-lg btn-outline-primary">Купить</button>
+                        <a href="/subscriptions/buy-subscription" class="w-100 btn btn-lg btn-outline-primary">Купить</a>
                     </div>
                 </div>
             </div>

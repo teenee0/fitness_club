@@ -13,18 +13,20 @@
             <img th:src="@{/img/cycle.webp}" class="img-fluid rounded mb-4" alt="Групповые программы">
         </div>
         <div class="col-md-6">
-            <p class="lead">Наши групповые программы включают самые популярные виды тренировок, чтобы вы могли заниматься в команде, под руководством опытных тренеров.</p>
-            <ul class="list-unstyled">
-                <li  th:each="subcategory : ${subcategories}" ><p class="badge bg-danger" th:text="${subcategory.name}"></p></li>
-            </ul>
+            <p class="lead">
+                Наши групповые программы включают самые популярные виды тренировок, чтобы вы могли заниматься в команде, под руководством опытных тренеров.
+            </p>
+            <div class="d-flex flex-wrap gap-2">
+                <span class="badge bg-danger" th:each="subcategory : ${subcategories}" th:text="${subcategory.name}"></span>
+            </div>
 
         </div>
     </div>
     <h1 class="text-center mb-4 mt-3">Тренерский состав</h1>
     <div class="row">
         <!-- Карточка тренера -->
-        <div class="col-md-4" th:each="trainer : ${fitnessTrainers}">
-            <a th:href="@{/trainers/{id}(id=${trainer.id})}" style="text-decoration: none; color: inherit;">
+        <div class="col-md-4 mb-3" th:each="trainer : ${fitnessTrainers}">
+<!--            <a th:href="@{/trainers/{id}(id=${trainer.id})}" style="text-decoration: none; color: inherit;">-->
                 <div class="card mb-4 shadow-sm" style="height: 100%; display: flex; flex-direction: column;">
                     <!-- Динамическое изображение -->
                     <img class="card-img-top" th:src="@{/img/Trainers/__${trainer.photoPath}__}" style="height: 300px; object-fit: cover;">
@@ -57,7 +59,7 @@
                         </div>
                     </div>
                 </div>
-            </a>
+<!--            </a>-->
         </div>
     </div>
     <div class="container mt-5">
@@ -66,34 +68,22 @@
         <table class="table table-bordered table-hover">
             <thead class="table-dark">
             <tr>
-                <th scope="col">Дата</th>
-                <th scope="col">Время</th>
-                <th scope="col">Тренировка</th>
-                <th scope="col">Тренер</th>
-                <th scope="col">Тип тренировки</th>
+                <th>Название</th>
+                <th>Дата и время</th>
+                <th>Длительность</th>
+                <th>Количество участников</th>
+                <th>Номер зала</th>
+                <th>Тренер</th>
             </tr>
             </thead>
             <tbody>
-            <tr>
-                <td>24 Октября 2024</td>
-                <td>10:00 - 11:00</td>
-                <td>Кардио</td>
-                <td>Иван Иванов</td>
-                <td><span class="badge bg-primary">Кардио</span></td>
-            </tr>
-            <tr>
-                <td>24 Октября 2024</td>
-                <td>12:00 - 13:00</td>
-                <td>Силовая тренировка</td>
-                <td>Анна Петрова</td>
-                <td><span class="badge bg-danger">Силовая</span></td>
-            </tr>
-            <tr>
-                <td>25 Октября 2024</td>
-                <td>15:00 - 16:00</td>
-                <td>Йога</td>
-                <td>Максим Сергеев</td>
-                <td><span class="badge bg-success">Йога</span></td>
+            <tr th:each="schedule : ${groupSchedules}">
+                <td> <span class="badge bg-danger" th:text="${schedule.trainerSubcategories.subcategory.name}"> </span></td>
+                <td th:text="${#temporals.format(schedule.startTime, 'dd.MM.yyyy HH:mm')}"></td>
+                <td th:text="${schedule.duration}"></td>
+                <td th:text="${schedule.maxParticipants}"></td>
+                <td th:text="${schedule.hallNumber}"></td>
+                <td> <span class="badge bg-success" th:text="${schedule.trainerSubcategories.trainer.name + ' ' + schedule.trainerSubcategories.trainer.surname}"></span></td>
             </tr>
             </tbody>
         </table>

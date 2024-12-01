@@ -22,32 +22,15 @@
             <tr>
                 <form id="addForm" th:action="@{/admin/add-subcategory}" method="post">
                     <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
-                    <input type="hidden" name="whatPage" value="martial-arts"/>
                     <td>Новый</td>
                     <td>
-                        <select id="subcategory-select" name="subcategoryId" class="form-select" required>
-                            <option value="" selected disabled>Выберите вид занятия</option>
-                            <option th:each="subcategory : ${subcategories}" th:value="${subcategory.id}"
-                                    th:text="${subcategory.name}"></option>
-                        </select>
+                        <input type="text" class="form-control" name="name" required />
                     </td>
                     <td>
-                        <input type="datetime-local" class="form-control" name="date" required />
-                    </td>
-                    <td>
-                        <input type="time" class="form-control" name="duration" required />
-                    </td>
-                    <td>
-                        <input type="number" class="form-control" name="maxParticipants" required />
-                    </td>
-                    <td>
-                        <input type="number" class="form-control" name="hallNumber" required />
-                    </td>
-
-                    <td>
-                        <select id="trainer-select" name="trainerId" class="form-select" required>
-                            <option value="" selected disabled>Выберите тренера</option>
-                            <!-- Опции будут заполняться динамически -->
+                        <select id="subcategory-select" name="specialization" class="form-select" required>
+                            <option value="" selected disabled>Выберите категорию</option>
+                            <option th:each="specialization : ${specializations}" th:value="${specialization.id}"
+                                    th:text="${specialization.name}"></option>
                         </select>
                     </td>
                 </form>
@@ -63,18 +46,13 @@
             </tr>
 
             <!-- Здесь можно добавить код для отображения существующих занятий -->
-            <tr th:each="schedule : ${martialArtSchedules}">
-                <td th:text="${schedule.id}"></td>
-                <td th:text="${schedule.trainerSubcategories.subcategory.name}"></td>
-                <td th:text="${#temporals.format(schedule.startTime, 'yyyy-MM-dd HH:mm')}"></td>
-                <td th:text="${schedule.duration}"></td>
-                <td th:text="${schedule.maxParticipants}"></td>
-                <td th:text="${schedule.hallNumber}"></td>
-                <td th:text="${schedule.trainerSubcategories.trainer.name + ' ' + schedule.trainerSubcategories.trainer.surname}"></td>
+            <tr th:each="subcategory : ${subcategories}">
+                <td th:text="${subcategory.id}"></td>
+                <td th:text="${subcategory.name}"></td>
+                <td th:text="${subcategory.specialization.name}"></td>
                 <td>
-                    <form th:action="@{'/admin/group-schedule/delete/' + ${schedule.id}}" method="post" style="display: inline;">
+                    <form th:action="@{'/admin/subcategories/delete/' + ${subcategory.id}}" method="post" style="display: inline;">
                         <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
-                        <input type="hidden" name="whatPage" value="martial-arts"/>
                         <button class="btn btn-danger btn-sm" type="submit">Удалить</button>
                     </form>
                 </td>
