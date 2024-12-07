@@ -6,6 +6,9 @@ import com.example.fitness_club.Repositories.UsersRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.Optional;
+
 @Service
 public class UserService {
 
@@ -37,5 +40,41 @@ public class UserService {
                 .orElseThrow(() -> new RuntimeException("Пользователь не найден!"));
     }
 
+    // Получить всех пользователей
+    public List<Users> getAllUsers() {
+        return usersRepository.findAll();
+    }
+
+    // Получить пользователя по ID
+    public Optional<Users> getUserById(Long id) {
+        return usersRepository.findById(id).stream().findFirst();
+    }
+
+    // Создать нового пользователя
+    public Users createUser(Users user) {
+        return usersRepository.save(user);
+    }
+
+    // Удалить пользователя по ID
+    public boolean deleteUser(Long id) {
+        if (usersRepository.existsById(id)) {
+            usersRepository.deleteById(id);
+            return true;
+        }
+        return false;
+    }
+
+
+    // Обновить данные пользователя
+    public Optional<Users> updateUser(Long id, Users updatedUser) {
+        return usersRepository.findById(id)
+                .map(existingUser -> {
+                    existingUser.setName(updatedUser.getName());
+                    existingUser.setPhoneNumber(updatedUser.getPhoneNumber());
+                    existingUser.setEmail(updatedUser.getEmail());
+                    existingUser.setRole(updatedUser.getRole());
+                    return usersRepository.save(existingUser);
+                });
+    }
 }
 

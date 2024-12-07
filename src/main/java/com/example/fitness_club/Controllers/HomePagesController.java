@@ -1,14 +1,12 @@
 package com.example.fitness_club.Controllers;
 
 import com.example.fitness_club.Models.*;
-import com.example.fitness_club.Repositories.GroupScheduleRepository;
-import com.example.fitness_club.Repositories.SubcategoryRepository;
-import com.example.fitness_club.Repositories.SubscriptionRepository;
-import com.example.fitness_club.Repositories.TrainerRepository;
+import com.example.fitness_club.Repositories.*;
 import com.example.fitness_club.Services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -31,6 +29,8 @@ public class HomePagesController {
     private UserService userService;
     @Autowired
     private SubscriptionRepository subscriptionRepository;
+    @Autowired
+    private UsersRepository usersRepository;
 
     @GetMapping
     public String HomePage(Model model) {
@@ -73,10 +73,22 @@ public class HomePagesController {
     }
 
     @GetMapping("/account")
-    public String accountPage(Model model) {
+    public String accountPage(Model model, Authentication authentication_role) {
         // Получение текущего пользователя из контекста Spring Security
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String phoneNumber = authentication.getName(); // Логин пользователя (номер телефона)
+
+        if (authentication_role.getAuthorities().stream().anyMatch(role -> role.getAuthority().equals("ROLE_TRAINER"))) {
+            Trainers trainer = trainerRepository.findByPhoneNumber(phoneNumber)
+                    .orElseThrow(() -> new RuntimeException("Пользователь не найден!"));
+            List<Users> userTrainer = usersRepository.findUsersByTrainerId(trainer.getId());
+            List<GroupSchedule> groupSchedules = groupScheduleRepository.findGroupSchedulesByTrainerId(trainer.getId());
+            model.addAttribute("groupSchedules", groupSchedules);
+            model.addAttribute("users", userTrainer);
+            model.addAttribute("trainer", trainer);
+            return "trainer_account_page";
+        }
+
 
         // Найти пользователя по номеру телефона
         Users user = userService.findByPhoneNumber(phoneNumber);
@@ -94,7 +106,7 @@ public class HomePagesController {
             model.addAttribute("subscription", subscription);
         }
 
-        model.addAttribute("trainer", trainers);
+        model.addAttribute("trainers", trainers);
 
 
         model.addAttribute("user", user);

@@ -9,6 +9,8 @@
 <main>
     <div class="container mt-5">
         <h1 class="text-center mb-4">Редактирование профиля тренера</h1>
+        <p class="success-message" th:if="${message}" th:text="${message}"></p>
+        <p class="error-message" th:if="${error}" th:text="${error}"></p>
         <form id="myForm" th:action="@{/admin/trainers/update/{id}(id=${trainer.id})}" method="post" enctype="multipart/form-data">
             <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
 
@@ -35,8 +37,15 @@
                         </tr>
                         <tr>
                             <td>Телефон</td>
-                            <td><input th:value="${trainer.number}" type="text" class="form-control" name="number"
+                            <td><input th:value="${trainer.phoneNumber}" type="text" class="form-control" name="number"
                                        required></td>
+                        </tr>
+                        <tr>
+                            <td>Почта</td>
+                            <td><input th:value="${trainer.email}" type="text" class="form-control"
+                                       name="email" required>
+                                <a th:href="@{/admin/trainers/new-password/{id}(id=${trainer.id})}" class="btn btn-primary mb-2 mt-2">Отправить пароль</a>
+                            </td>
                         </tr>
                         <tr>
                             <td>Описание</td>

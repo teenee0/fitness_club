@@ -3,10 +3,13 @@ package com.example.fitness_club.Controllers;
 import com.example.fitness_club.Models.Subcategories;
 import com.example.fitness_club.Models.TrainerSubcategories;
 import com.example.fitness_club.Models.Trainers;
+import com.example.fitness_club.Models.Users;
 import com.example.fitness_club.Repositories.*;
 import com.example.fitness_club.Services.EmailService;
+import com.example.fitness_club.Services.PasswordGenerator;
 import com.example.fitness_club.Services.UserSubscriptionService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -32,6 +35,10 @@ public class AdminTrainersController {
     private SubcategoryRepository subcategoryRepository;
     @Autowired
     private TrainerSubcategoriesRepository trainerSubcategoriesRepository;
+    @Autowired
+    private EmailService emailService;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
 
 
@@ -57,21 +64,34 @@ public class AdminTrainersController {
                              @RequestParam("name") String name,
                              @RequestParam("surname") String surname,
                              @RequestParam("number") String phoneNumber,
-                             @RequestParam("password") String password,
+                             @RequestParam("email") String email,
                              @RequestParam("description") String description,
                              @RequestParam("yearsOfExperience") int yearsOfExperience,
-                             @RequestParam(value = "addedSubcategories", required = false) String addedSubcategories
+                             @RequestParam(value = "addedSubcategories", required = false) String addedSubcategories,
+                             Model model
                              ){
 
         Trainers trainer = new Trainers();
         trainer.setName(name);
         trainer.setSurname(surname);
-        trainer.setNumber(phoneNumber);
-        trainer.setPassword(password);
         trainer.setDescription(description);
         trainer.setYearsOfExperience(yearsOfExperience);
-        if (!photo.isEmpty()) {
-            try {
+
+        try {
+            if (trainerRepository.findByPhoneNumber(phoneNumber).isPresent()) {
+                throw new Exception("Пользователь с таким номером телефона уже существует!");
+            }
+            trainer.setNumber(phoneNumber);
+            String password = PasswordGenerator.generatePassword(8);
+            String encodedPassword = passwordEncoder.encode(password);
+
+            // Отправка пароля на email
+            emailService.sendEmail(email, "Fitness - ваш пароль", password);
+            trainer.setEmail(email);
+            trainer.setPassword(encodedPassword);
+
+            // Загрузка фото
+            if (!photo.isEmpty()) {
                 String fileName = "trn" + System.currentTimeMillis() + ".jpeg";
                 String uploadDir = "src/main/resources/static/img/Trainers";
                 Path uploadPath = Paths.get(uploadDir);
@@ -82,11 +102,19 @@ public class AdminTrainersController {
 
                 Files.copy(photo.getInputStream(), uploadPath.resolve(fileName), StandardCopyOption.REPLACE_EXISTING);
                 trainer.setPhotoPath(fileName);
-            } catch (IOException e) {
-                return "redirect:/admin/trainers/add";
             }
+
+            // Сохранение тренера
+            trainerRepository.save(trainer);
+            model.addAttribute("message", "Регистрация тренера успешно завершена!");
+        } catch (IOException e) {
+            model.addAttribute("error", "Ошибка загрузки фото: " + e.getMessage());
+            return addTrainer(model); // Возвращаем пользователя на страницу регистрации
+        } catch (Exception e) {
+            model.addAttribute("error", "Ошибка регистрации тренера: " + e.getMessage());
+            return addTrainer(model); // Возвращаем пользователя на страницу регистрации
         }
-        trainerRepository.save(trainer);
+
 
 
         // Добавляем подкатегории
@@ -114,6 +142,7 @@ public class AdminTrainersController {
         if (trainer == null) {
             return "redirect:/admin/trainers";
         }
+        System.out.println(trainer.getPhoneNumber());
 
         // Все подкатегории
         List<Subcategories> allSubcategories = subcategoryRepository.findAll();
@@ -143,6 +172,7 @@ public class AdminTrainersController {
             @RequestParam("description") String description,
             @RequestParam("yearsOfExperience") int yearsOfExperience,
             @RequestParam("photo") MultipartFile photo,
+            @RequestParam("email") String email,
             @RequestParam(value = "addedSubcategories", required = false) String addedSubcategories,
             @RequestParam(value = "removedSubcategories", required = false) String removedSubcategories,
             RedirectAttributes redirectAttributes) {
@@ -160,6 +190,7 @@ public class AdminTrainersController {
         trainer.setNumber(phoneNumber);
         trainer.setDescription(description);
         trainer.setYearsOfExperience(yearsOfExperience);
+        trainer.setEmail(email);
 
         // Обрабатываем фото
         if (!photo.isEmpty()) {
@@ -222,5 +253,18 @@ public class AdminTrainersController {
         }
 
         return "redirect:/admin/trainers";
+    }
+
+    @GetMapping("/new-password/{trainerId}")
+    public String newPassword(@PathVariable Long trainerId){
+        Trainers trainer = trainerRepository.findById(trainerId).orElse(null);
+        if (trainer != null) {
+            String password = PasswordGenerator.generatePassword(8);
+            emailService.sendEmail(trainer.getEmail(), "Fitness - ваш новый пароль", password);
+            String encodedPassword = passwordEncoder.encode(password);
+            trainer.setPassword(encodedPassword);
+            trainerRepository.save(trainer);
+        }
+        return "redirect:/admin/trainers/" + trainerId;
     }
 }

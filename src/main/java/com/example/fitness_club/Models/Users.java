@@ -1,5 +1,6 @@
 package com.example.fitness_club.Models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -45,9 +46,11 @@ public class Users {
     private LocalDateTime registrationDate = LocalDateTime.now();
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    @JsonIgnore
     private List<UserSubscription> userSubscriptions;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    @JsonIgnore
     private List<UserTrainer> userTrainers;
 
     public Users() {}

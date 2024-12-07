@@ -9,6 +9,7 @@ import com.example.fitness_club.Services.UserSubscriptionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -36,6 +37,8 @@ public class AdminUsersController {
     private UserSubscriptionService userSubscriptionService;
     @Autowired
     private UserService userService;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     @GetMapping
     public String adminUsersPage(Model model) {
@@ -105,7 +108,8 @@ public class AdminUsersController {
         Users user = usersRepository.findById(userId).orElse(null);
         if (user != null) {
             String password = PasswordGenerator.generatePassword(8);
-            user.setPassword(password);
+            String encodedpassword = passwordEncoder.encode(password);
+            user.setPassword(encodedpassword);
             usersRepository.save(user);
             emailService.sendEmail(user.getEmail(), "Fitness - ваш новый пароль", password);
         }

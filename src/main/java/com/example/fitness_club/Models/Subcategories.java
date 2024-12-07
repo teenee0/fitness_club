@@ -1,5 +1,6 @@
 package com.example.fitness_club.Models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.util.ArrayList;
@@ -15,9 +16,11 @@ public class Subcategories {
 
     @ManyToOne
     @JoinColumn(name = "specialization_id")
+    @JsonIgnore
     private Specializations specialization;
 
     @OneToMany(mappedBy = "subcategory", cascade = CascadeType.ALL)
+    @JsonIgnore
     private List<TrainerSubcategories> trainerSubcategories;
 
 

@@ -12,4 +12,5 @@ import java.util.List;
 public interface UserTrainersRepository extends JpaRepository<UserTrainer, Long> {
     @Query("SELECT ut FROM UserTrainer ut WHERE ut.user.id = :userId AND ut.trainer.id = :trainerId")
     List<UserTrainer> findByUserIdAndTrainerId(@Param("userId") Long userId, @Param("trainerId") Long trainerId);
+
 }

@@ -19,4 +19,10 @@ public interface GroupScheduleRepository extends JpaRepository<GroupSchedule, Lo
 """)
     List<GroupSchedule> findBySpecialization(@Param("specialization") String specialization);
 
+    @Query("SELECT gs FROM GroupSchedule gs " +
+            "JOIN gs.trainerSubcategories ts " +
+            "JOIN ts.trainer t " +
+            "WHERE t.id = :trainerId")
+    List<GroupSchedule> findGroupSchedulesByTrainerId(@Param("trainerId") Long trainerId);
+
 }

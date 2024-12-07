@@ -8,6 +8,10 @@
 
 <main class="container mt-5">
     <h1 class="text-center mb-4">Личный кабинет</h1>
+    <a th:if="${user.role.toString() == 'ADMIN'}" href="/admin/users"
+       class="btn btn-success btn-lg w-100 mt-3 mb-3 d-flex align-items-center justify-content-center">
+        <span class="me-2">Админ панель</span>
+    </a>
 
     <!-- Информация о клиенте -->
     <div class="card mb-4">
@@ -39,20 +43,20 @@
     </div>
 
     <!-- Информация о тренере -->
-    <div th:if="${trainer != null and trainer.size() > 0}" class="card mb-4">
+    <div th:if="${trainers != null and trainers.size() > 0}" class="card mb-4">
 
         <div class="card-body">
             <h3 class="card-title ml-2">Ваши тренеры</h3>
-            <div  th:each="trainer : ${trainer}">
+            <div  th:each="trainer : ${trainers}">
                 <p class="card-text">
                     <strong>Имя:</strong> <span th:text="${trainer.name} + ' ' + ${trainer.surname}">Иван Иванов</span> <br>
                     <strong>Опыт работы:</strong> <span th:text="${trainer.yearsOfExperience}">5</span> лет <br>
-                    <strong>Контактный номер:</strong> <span th:text="${trainer.number}">+7 000 000 00 00</span> <br>
+                    <strong>Контактный номер:</strong> <span th:text="${trainer.phoneNumber}">+7 000 000 00 00</span> <br>
                 </p><br>
             </div>
         </div>
     </div>
-    <div th:if="${trainer.size() == 0}" class="card mb-4">
+    <div th:if="${trainers.size() == 0}" class="card mb-4">
         <div class="card-body">
             <h3 class="card-title ml-2">У пользователя нет назначенных тренеров.</h3>
         </div>

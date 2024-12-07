@@ -45,7 +45,7 @@ public class AdminPanel {
             return "redirect:/admin/users"; // Перенаправляем пользователя на страницу входа
         } catch (Exception e) {
             model.addAttribute("error", "Registration failed: " + e.getMessage());
-            return "register"; // Возвращаем пользователя на страницу регистрации
+            return "admin_panel_pages/admin_create_user"; // Возвращаем пользователя на страницу регистрации
         }
     }
 

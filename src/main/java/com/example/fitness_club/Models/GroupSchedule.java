@@ -1,5 +1,6 @@
 package com.example.fitness_club.Models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -13,6 +14,7 @@ public class GroupSchedule {
 
     @ManyToOne
     @JoinColumn(name = "trainer_subcategory_id", nullable = false)
+    @JsonIgnore
     private TrainerSubcategories trainerSubcategories;
 
     @Column(nullable = false)

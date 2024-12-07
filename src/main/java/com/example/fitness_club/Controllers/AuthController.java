@@ -6,6 +6,7 @@ import com.example.fitness_club.Services.PasswordGenerator;
 import com.example.fitness_club.Services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,11 +21,13 @@ public class AuthController {
     private UserService userService;
     @Autowired
     private EmailService emailService;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     @GetMapping("/login")
     public String loginPage(Model model, String error, String logout) {
         if (error != null) {
-            model.addAttribute("error", "Неверный номер телефона или пароль!");
+            model.addAttribute("error", error);
         }
         if (logout != null) {
             model.addAttribute("message", "Вы успешно вышли из системы.");

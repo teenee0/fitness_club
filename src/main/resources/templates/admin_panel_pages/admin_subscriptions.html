@@ -7,7 +7,7 @@
 <th:block th:insert="~{admin_panel_blocks/header :: header}"></th:block>
 
 <main>
-    <div class="container mt-4">
+    <div class="mx-5 mt-4">
         <h1 class="mb-4">Редактирование абонементов</h1>
 
         <!-- Добавление нового абонемента -->
@@ -53,14 +53,14 @@
                     </select>
                 </div>
                 <div class="col-md-2">
-                    <label for="martial_arts" class="form-label">InBody</label>
+                    <label for="martial_arts" class="form-label">Единоборста</label>
                     <select name="martial_arts" id="martial_arts" class="form-select">
                         <option value="true">Да</option>
                         <option value="false">Нет</option>
                     </select>
                 </div>
                 <div class="col-md-2">
-                    <label for="group_programs" class="form-label">InBody</label>
+                    <label for="group_programs" class="form-label">Групповые программы</label>
                     <select name="group_programs" id="group_programs" class="form-select">
                         <option value="true">Да</option>
                         <option value="false">Нет</option>
@@ -92,7 +92,7 @@
             <button type="submit" class="btn btn-success">Добавить</button>
         </form>
     </div>
-    <div class="m-5">
+    <div class="mx-5">
 
         <!-- Таблица для редактирования существующих абонементов -->
         <h3>Существующие абонементы</h3>
@@ -172,8 +172,8 @@
                         </select>
                     </td>
                     <td>
-                        <button type="submit" class="btn btn-primary btn-sm">Сохранить</button>
-                        <a th:href="@{/admin/subscriptions/delete/{id}(id=${subscription.id})}" class="btn btn-danger btn-sm">Удалить</a>
+                        <button type="submit" class="btn btn-primary btn-sm mb-2">Сохранить</button>
+                        <a th:href="@{/admin/subscriptions/delete/{id}(id=${subscription.id})}" class="btn btn-danger btn-sm mb-2">Удалить</a>
                     </td>
                 </form>
             </tr>

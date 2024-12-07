@@ -39,7 +39,7 @@ public class SecurityConfig {
                         // Разрешаем доступ без авторизации к определённым страницам
                         .requestMatchers("/", "/fitness", "/martial-arts", "/group-programs", "/prices", "/register", "/login").permitAll()
                         // Доступ к защищённым страницам только для авторизованных пользователей
-                        .requestMatchers("/css/**", "/js/**", "/img/**", "/img/Trainers/**").permitAll()
+                        .requestMatchers("/css/**", "/js/**", "/img/**", "/img/Trainers/**", "/api/**").permitAll()
                         .requestMatchers("/account").authenticated()
                         .requestMatchers("/admin/**").hasRole("ADMIN")
                         .requestMatchers("/trainer/**").hasRole("TRAINER")

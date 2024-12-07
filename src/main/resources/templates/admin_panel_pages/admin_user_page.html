@@ -100,7 +100,7 @@
                 <tr th:each="trainer : ${trainers}">
                     <td th:text="${trainer.id}"></td>
                     <td th:text="'Тренер: ' + ${trainer.name} + ' ' + ${trainer.surname}"></td>
-                    <td th:text="${trainer.number}"></td>
+                    <td th:text="${trainer.phoneNumber}"></td>
                     <td>
                         <form th:action="@{/admin/users/{userId}/remove-trainer/{trainerId}(userId=${user.id}, trainerId=${trainer.id})}"
                               method="post"

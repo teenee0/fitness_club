@@ -1,7 +1,7 @@
 package com.example.fitness_club.Models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import org.springframework.boot.context.properties.bind.DefaultValue;
 
 import java.util.List;
 
@@ -17,8 +17,8 @@ public class Trainers {
     @Column(nullable = false)
     private String surname;
 
-    @Column(nullable = false)
-    private String number;
+    @Column(nullable = false, unique = true)
+    private String phoneNumber;
 
     @Column(nullable = false)
     private String Description;
@@ -33,12 +33,21 @@ public class Trainers {
     @Column(nullable = false) // Необязательное поле
     private String photoPath;
 
+    @Column(nullable = false)
+    private String email;
+
     @OneToMany(mappedBy = "trainer", cascade = CascadeType.ALL)
+    @JsonIgnore
     private List<UserTrainer> userTrainers; // Связь с таблицей UserTrainer
 
 
     @OneToMany(mappedBy = "trainer", cascade = CascadeType.ALL)
+    @JsonIgnore
     private List<TrainerSubcategories> trainerSubcategories;
+
+    @OneToMany(mappedBy = "trainer", cascade = CascadeType.ALL)
+    @JsonIgnore
+    private List<Competitions> competitions;
 
 
 
@@ -58,7 +67,7 @@ public class Trainers {
     public Trainers(String name, String surname, String number, String password, String description, Integer yearsOfExperience) {
         this.name = name;
         this.surname = surname;
-        this.number = number;
+        this.phoneNumber = number;
         this.password = password;
         this.Description = description;
         this.yearsOfExperience = yearsOfExperience;
@@ -88,12 +97,12 @@ public class Trainers {
         this.surname = surname;
     }
 
-    public String getNumber() {
-        return number;
+    public String getPhoneNumber() {
+        return phoneNumber;
     }
 
     public void setNumber(String number) {
-        this.number = number;
+        this.phoneNumber = number;
     }
 
     public String getDescription() {
@@ -135,6 +144,14 @@ public class Trainers {
 
     public void setTrainerSubcategories(List<TrainerSubcategories> trainerSubcategories) {
         this.trainerSubcategories = trainerSubcategories;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 }
 

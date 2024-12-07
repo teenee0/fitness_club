@@ -8,6 +8,8 @@
 <main>
     <div class="container mt-5">
         <h1 class="text-center mb-4">Создание нового тренера</h1>
+        <p class="success-message" th:if="${message}" th:text="${message}"></p>
+        <p class="error-message" th:if="${error}" th:text="${error}"></p>
         <form th:action="@{/admin/trainers/add}" method="post" enctype="multipart/form-data">
             <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
 
@@ -35,8 +37,8 @@
                             <td><input type="text" class="form-control" name="number" required></td>
                         </tr>
                         <tr>
-                            <td>Пароль</td>
-                            <td><input type="text" class="form-control" name="password" required></td>
+                            <td>Email</td>
+                            <td><input type="email" name="email" class="form-control" required></td>
                         </tr>
                         <tr>
                             <td>Описание</td>
