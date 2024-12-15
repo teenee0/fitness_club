@@ -2,6 +2,7 @@ package com.example.fitness_club.Models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import org.hibernate.annotations.ColumnDefault;
 
 import java.util.List;
 
@@ -22,6 +23,10 @@ public class Trainers {
 
     @Column(nullable = false)
     private String Description;
+
+    @Column(nullable = false)
+    @ColumnDefault("true")
+    private boolean is_on_main;
 
 
     @Column(nullable = false)
@@ -71,6 +76,26 @@ public class Trainers {
         this.password = password;
         this.Description = description;
         this.yearsOfExperience = yearsOfExperience;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
+
+    public boolean getIs_on_main() {
+        return is_on_main;
+    }
+
+    public void setIs_on_main(boolean is_on_main) {
+        this.is_on_main = is_on_main;
+    }
+
+    public List<Competitions> getCompetitions() {
+        return competitions;
+    }
+
+    public void setCompetitions(List<Competitions> competitions) {
+        this.competitions = competitions;
     }
 
     public long getId() {

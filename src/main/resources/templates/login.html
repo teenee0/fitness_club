@@ -21,8 +21,8 @@
 
         <!-- Поле ввода номера телефона -->
         <div class="form-floating mb-2">
-            <input type="text" name="phoneNumber" class="form-control" id="floatingPhoneNumber" placeholder="Номер телефона" required>
-            <label for="floatingPhoneNumber">Номер телефона</label>
+            <input type="text" name="phoneNumber" id="phone" class="form-control"  placeholder="Номер телефона" required>
+            <label for="phone">Номер телефона</label>
         </div>
 
         <!-- Поле ввода пароля -->
@@ -49,6 +49,17 @@
 </main>
 
 <th:block th:insert="~{blocks/footer :: footer}"></th:block>
+
+<!-- Подключение скрипта IMask -->
+<script src="https://unpkg.com/imask"></script>
+<script>
+    // Инициализация маски для российского номера телефона
+    const phoneMask = IMask(
+        document.getElementById('phone'), {
+            mask: '+{7} (000) 000-00-00'
+        }
+    );
+</script>
 
 </body>
 </html>

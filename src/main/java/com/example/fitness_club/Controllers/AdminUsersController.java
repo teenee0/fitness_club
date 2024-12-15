@@ -41,14 +41,27 @@ public class AdminUsersController {
     private PasswordEncoder passwordEncoder;
 
     @GetMapping
-    public String adminUsersPage(Model model) {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String phoneNumber = authentication.getName();
-        Users user = userService.findByPhoneNumber(phoneNumber);
-        List<Users> users = usersRepository.findAll();
+    public String adminUsersPage(@RequestParam(name = "name", required = false) String name,
+                                 @RequestParam(name = "phoneNumber", required = false) String phoneNumber,
+                                 @RequestParam(name = "role", required = false) String role,
+                                 Model model) {
+        List<Users> users;
+
+        if ((name == null || name.isEmpty()) &&
+                (phoneNumber == null || phoneNumber.isEmpty()) &&
+                (role == null || role.isEmpty())) {
+            // Если параметры не указаны, возвращаем всех пользователей
+            users = usersRepository.findAll();
+        } else {
+            // Фильтрация по имени, номеру телефона и роли
+            users = usersRepository.findAll().stream()
+                    .filter(user -> (name == null || name.isEmpty() || user.getName().toLowerCase().contains(name.toLowerCase())))
+                    .filter(user -> (phoneNumber == null || phoneNumber.isEmpty() || user.getPhoneNumber().contains(phoneNumber)))
+                    .filter(user -> (role == null || role.isEmpty() || user.getRole().name().equalsIgnoreCase(role)))
+                    .toList();
+        }
 
         model.addAttribute("users", users);
-        model.addAttribute("user", user);
         return "admin_panel_pages/admin_panel";
     }
 

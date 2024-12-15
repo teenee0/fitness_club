@@ -6,6 +6,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
@@ -37,7 +38,7 @@ public class SecurityConfig {
         http
                 .authorizeHttpRequests(authorize -> authorize
                         // Разрешаем доступ без авторизации к определённым страницам
-                        .requestMatchers("/", "/fitness", "/martial-arts", "/group-programs", "/prices", "/register", "/login").permitAll()
+                        .requestMatchers("/", "/fitness", "/martial-arts", "/group-programs", "/prices", "/register", "/login", "/competitions").permitAll()
                         // Доступ к защищённым страницам только для авторизованных пользователей
                         .requestMatchers("/css/**", "/js/**", "/img/**", "/img/Trainers/**", "/api/**").permitAll()
                         .requestMatchers("/account").authenticated()
@@ -58,6 +59,7 @@ public class SecurityConfig {
                         .logoutUrl("/logout") // Настраиваем путь для выхода
                         .permitAll()
                 );
+        http.sessionManagement(httpSecuritySessionManagementConfigurer -> httpSecuritySessionManagementConfigurer.sessionCreationPolicy(SessionCreationPolicy.ALWAYS));
         return http.build();
     }
 }

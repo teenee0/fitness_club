@@ -19,6 +19,23 @@
             margin-right: 10px; /* Добавить отступ между иконкой и текстом */
         }
 
+
+    </style>
+    <style>
+        .gradient-bg {
+            background: #283401;
+            background: linear-gradient(0deg, #283401, #206C63);
+            color: white; /* Устанавливаем цвет текста белым */
+            border: none; /* Убираем стандартные границы карточки */
+        }
+        .gradient-bg .card-body {
+            color: white; /* Цвет текста внутри карточки */
+        }
+        .gradient-bg2 {
+            background: #283401;
+            background: linear-gradient(180deg, #283401, #206C63);
+        }
+
     </style>
 </html>
 <body cz-shortcut-listen="true" class="d-flex flex-column min-vh-100">
@@ -73,8 +90,8 @@
     <div class="container py-3 mt-4">
         <div class="row row-cols-1 row-cols-md-3 mb-3">
             <div class="col" th:each="subscription : ${subscriptions}">
-                <div class="card mb-4 rounded-3 shadow-sm border-primary">
-                    <div class="card-header py-3 text-bg-primary border-primary">
+                <div class="card mb-4 rounded-3 shadow-sm border-primary gradient-bg">
+                    <div class="card-header py-3 text-bg-primary gradient-bg2">
                         <h4 class="my-0 fw-normal" th:text="${subscription.subscription_type}">Название</h4>
                     </div>
                     <div class="card-body">
@@ -114,7 +131,7 @@
                                 Групповые программы
                             </li>
                         </ul>
-                        <a href="/subscriptions/buy-subscription" class="w-100 btn btn-lg btn-outline-primary">Купить</a>
+                        <a href="/subscriptions/buy-subscription" class="w-100 btn btn-lg btn-outline-light">Купить</a>
                     </div>
                 </div>
             </div>

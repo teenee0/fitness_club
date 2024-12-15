@@ -29,7 +29,7 @@ public class AdminCompetitionsController {
         List<Trainers> trainers = trainerRepository.findAll();
         model.addAttribute("competitions", competitions);
         model.addAttribute("trainers", trainers);
-        return "admin_panel_pages/admin_competitions";
+        return "admin_panel_pages/admin_competitions_page";
     }
 
     @PostMapping("/add")
@@ -49,6 +49,9 @@ public class AdminCompetitionsController {
         competition.setFirst_winner(firstWinner);
         competition.setSecond_winner(secondWinner);
         competition.setThird_winner(thirdWinner);
+        competition.setFirst_winner_prize(firstWinnerPrize);
+        competition.setSecond_winner_prize(secondWinnerPrize);
+        competition.setThird_winner_prize(thirdWinnerPrize);
         competition.setDate(date);
         competition.setTrainers(trainerRepository.findById(trainerId).orElse(null));
         competitionsRepository.save(competition);
@@ -60,8 +63,11 @@ public class AdminCompetitionsController {
                                     @RequestParam(name = "name") String name,
                                     @RequestParam(name = "description") String description,
                                     @RequestParam(name = "first_winner") String firstWinner,
+                                    @RequestParam(name = "first_winner_prize") String firstWinnerPrize,
                                     @RequestParam(name = "second_winner") String secondWinner,
+                                    @RequestParam(name = "second_winner_prize") String secondWinnerPrize,
                                     @RequestParam(name = "third_winner") String thirdWinner,
+                                    @RequestParam(name = "third_winner_prize") String thirdWinnerPrize,
                                     @RequestParam(name = "date") LocalDateTime date,
                                     @RequestParam(name = "trainer_id") long trainerId,
                                     RedirectAttributes redirectAttributes){
@@ -76,10 +82,19 @@ public class AdminCompetitionsController {
         competition.setFirst_winner(firstWinner);
         competition.setSecond_winner(secondWinner);
         competition.setThird_winner(thirdWinner);
+        competition.setFirst_winner_prize(firstWinnerPrize);
+        competition.setSecond_winner_prize(secondWinnerPrize);
+        competition.setThird_winner_prize(thirdWinnerPrize);
         competition.setDate(date);
         competition.setTrainers(trainerRepository.findById(trainerId).orElse(null));
         competitionsRepository.save(competition);
         redirectAttributes.addFlashAttribute("success", "Данные тренера успешно обновлены.");
+        return "redirect:/admin/competitions";
+    }
+
+    @GetMapping("/delete/{id}")
+    public String deleteCompetition(@PathVariable long id) {
+        competitionsRepository.deleteById(id);
         return "redirect:/admin/competitions";
     }
 }

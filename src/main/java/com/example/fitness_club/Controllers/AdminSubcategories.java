@@ -2,6 +2,7 @@ package com.example.fitness_club.Controllers;
 
 import com.example.fitness_club.Models.Specializations;
 import com.example.fitness_club.Models.Subcategories;
+import com.example.fitness_club.Models.Trainers;
 import com.example.fitness_club.Repositories.*;
 import com.example.fitness_club.Services.EmailService;
 import com.example.fitness_club.Services.UserService;
@@ -49,6 +50,20 @@ public class AdminSubcategories {
         subcategory.setSpecialization(specialization);
         subcategoryRepository.save(subcategory);
         return "redirect:/admin/subcategories";
+    }
+
+    @GetMapping("/admin/subcategories/search")
+    public String searchTrainersByName(@RequestParam(name = "name", required = false) String name, Model model) {
+        List<Subcategories> subcategories;
+
+        if (name == null || name.isEmpty()) {
+            subcategories= subcategoryRepository.findAll(); // Если имя не указано, возвращаем всех тренеров
+        } else {
+            subcategories = subcategoryRepository.findByNameContainingIgnoreCase(name); // Поиск по имени
+        }
+
+        model.addAttribute("subcategories", subcategories);
+        return "admin_panel_pages/admin_subcategories_page";
     }
 
 }

@@ -25,15 +25,18 @@ public class AuthController {
     private PasswordEncoder passwordEncoder;
 
     @GetMapping("/login")
-    public String loginPage(Model model, String error, String logout) {
+    public String loginPage(@RequestParam(value = "error", required = false) String error,
+                            @RequestParam(value = "logout", required = false) String logout,
+                            Model model) {
         if (error != null) {
-            model.addAttribute("error", error);
+            model.addAttribute("error", "Неверный номер телефона или пароль.");
         }
         if (logout != null) {
             model.addAttribute("message", "Вы успешно вышли из системы.");
         }
         return "login";
     }
+
 
     @GetMapping("/redirect")
     public String redirectAfterLogin(Authentication authentication) {

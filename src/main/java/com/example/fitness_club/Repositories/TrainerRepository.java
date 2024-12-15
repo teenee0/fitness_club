@@ -23,4 +23,15 @@ public interface TrainerRepository extends JpaRepository<Trainers, Long> {
 
 
     Optional<Trainers> findByPhoneNumber(String phoneNumber);
+    @Query("""
+    SELECT DISTINCT t 
+    FROM Trainers t
+    JOIN FETCH t.trainerSubcategories ts
+    JOIN FETCH ts.subcategory sc
+    JOIN FETCH sc.specialization sp
+    WHERE sp.name = :specializationName and t.is_on_main = true
+""")
+    List<Trainers> findBySpecializationAndIsOnMainTrue(@Param("specializationName") String specializationName);
+
+    List<Trainers> findByNameContainingIgnoreCase(String name);
 }

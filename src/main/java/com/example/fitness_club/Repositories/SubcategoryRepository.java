@@ -15,4 +15,5 @@ public interface SubcategoryRepository extends JpaRepository<Subcategories, Long
     """)
     List<Subcategories> findBySpecializationId(int id);
 
+    List<Subcategories> findByNameContainingIgnoreCase(String name);
 }

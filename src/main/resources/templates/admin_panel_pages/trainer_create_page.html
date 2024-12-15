@@ -34,7 +34,7 @@
                         </tr>
                         <tr>
                             <td>Телефон</td>
-                            <td><input type="text" class="form-control" name="number" required></td>
+                            <td><input id="phone" type="text" class="form-control" name="number" required></td>
                         </tr>
                         <tr>
                             <td>Email</td>
@@ -46,7 +46,14 @@
                         </tr>
                         <tr>
                             <td>Стаж (лет)</td>
-                            <td><input type="number" class="form-control" name="yearsOfExperience" min="0"></td>
+                            <td><input type="number" class="form-control" name="yearsOfExperience" min="0" required></td>
+                        </tr>
+                        <tr>
+                            <td>Отображение тренера</td>
+                            <td><select name="is_on_main" class="form-select" required>
+                                <option th:value="true">Да</option>
+                                <option th:value="false">Нет</option>
+                            </select></td>
                         </tr>
                     </table>
                 </div>
@@ -117,7 +124,15 @@
     function updateHiddenFields() {
         document.getElementById('addedSubcategories').value = Array.from(addedSubcategories).join(',');
     }
-
+</script>
+<script src="https://unpkg.com/imask"></script>
+<script>
+    // Инициализация маски для российского номера телефона
+    const phoneMask = IMask(
+        document.getElementById('phone'), {
+            mask: '+{7} (000) 000-00-00'
+        }
+    );
 </script>
 </body>
 </html>

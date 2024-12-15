@@ -2,12 +2,15 @@ package com.example.fitness_club.Controllers;
 
 import com.example.fitness_club.Models.Subscription;
 import com.example.fitness_club.Repositories.SubscriptionRepository;
+import com.example.fitness_club.Repositories.UserSubscriptionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequestMapping("/admin/subscriptions")
@@ -15,12 +18,24 @@ public class AdminSubscriptionController {
 
     @Autowired
     private SubscriptionRepository subscriptionRepository;
+    @Autowired
+    private UserSubscriptionRepository userSubscriptionRepository;
 
     @GetMapping
     public String editSubscriptionsPage(Model model) {
         List<Subscription> subscriptions = subscriptionRepository.findAll();
         model.addAttribute("subscriptions", subscriptions);
         return "admin_panel_pages/admin_subscriptions";
+    }
+
+    @GetMapping("/stats")
+    public String getSubscriptionStats(Model model) {
+        List<String> months = userSubscriptionRepository.getMonths();
+        List<Long> counts = userSubscriptionRepository.getSubscriptionCounts();
+
+        model.addAttribute("months", months);
+        model.addAttribute("counts", counts);
+        return "admin_panel_pages/admin_subs_stats";
     }
 
     @PostMapping("/add")

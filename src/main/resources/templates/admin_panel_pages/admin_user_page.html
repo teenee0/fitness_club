@@ -37,7 +37,7 @@
                         <!--                        </tr>-->
                         <tr>
                             <td>Телефон</td>
-                            <td><input th:value="${user.phoneNumber}" type="text" class="form-control"
+                            <td><input id="phone" th:value="${user.phoneNumber}" type="text" class="form-control"
                                        name="phoneNumber" required></td>
                         </tr>
                         <tr>
@@ -51,7 +51,7 @@
                             <td>Дата регистрации</td>
                             <td>
                                 <span th:if="${user.registrationDate != null}"
-                                      th:text="${#temporals.format(user.registrationDate, 'dd-MM-yyyy HH:mm:ss')}">
+                                      th:text="${#temporals.format(user.registrationDate, 'dd.MM.yyyy HH:mm')}">
                                 </span>
                                 <span th:if="${user.registrationDate == null}">Дата не указана</span>
 
@@ -163,8 +163,8 @@
                 <tbody>
                 <tr th:each="subscription : ${subscriptions}">
                     <td th:text="${subscription.subscription.subscription_type}"></td>
-                    <td th:text="${#temporals.format(subscription.purchaseDate, 'dd-MM-yyyy HH:mm:ss')}"></td>
-                    <td th:text="${#temporals.format(subscription.endDate, 'dd-MM-yyyy HH:mm:ss')}"></td>
+                    <td th:text="${#temporals.format(subscription.purchaseDate, 'dd.MM.yyyy HH:mm')}"></td>
+                    <td th:text="${#temporals.format(subscription.endDate, 'dd.MM.yyyy HH:mm')}"></td>
                     <td>
                         <form th:action="@{/admin/users/{userId}/remove-subscription/{subscriptionId}(userId=${user.id}, subscriptionId=${subscription.id})}"
                               method="post"
@@ -223,6 +223,15 @@
     document.getElementById("submitButton").addEventListener("click", function () {
         document.getElementById("myForm").submit();
     });
+</script>
+<script src="https://unpkg.com/imask"></script>
+<script>
+    // Инициализация маски для российского номера телефона
+    const phoneMask = IMask(
+        document.getElementById('phone'), {
+            mask: '+{7} (000) 000-00-00'
+        }
+    );
 </script>
 </body>
 </html>

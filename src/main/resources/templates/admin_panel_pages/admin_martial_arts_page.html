@@ -11,6 +11,37 @@
 <main>
     <div class="container mt-4">
         <h3>Список занятий по единоборствам</h3>
+
+        <form th:action="@{/admin/martial-arts/search}" method="get" class="mb-4">
+            <div class="row">
+                <div class="col-md-3">
+                    <select  name="name" class="form-select">
+                        <option value="" selected disabled>Выберите вид занятия</option>
+                        <option th:each="subcategory : ${subcategories}" th:value="${subcategory.id}"
+                                th:text="${subcategory.name}"></option>
+                    </select>
+                </div>
+                <div class="col-md-2">
+                    <input type="number" name="hallNumber" class="form-control" placeholder="Номер зала" />
+                </div>
+                <div class="col-md-3">
+                    <select name="trainerId" class="form-select">
+                        <option value="" selected>Выберите тренера</option>
+                        <option th:each="trainer : ${trainers}" th:value="${trainer.id}" th:text="${trainer.name}"></option>
+                    </select>
+                </div>
+                <div class="col-md-2">
+                    <input type="datetime-local" name="startDate" class="form-control" />
+                </div>
+                <div class="col-md-2">
+                    <input type="datetime-local" name="endDate" class="form-control" />
+                </div>
+                <div class="col-md-2 mt-2">
+                    <button type="submit" class="btn btn-primary w-100">Поиск</button>
+                </div>
+            </div>
+        </form>
+
         <table class="table table-bordered">
             <thead>
             <tr>
@@ -73,7 +104,7 @@
             <tr th:each="schedule : ${martialArtSchedules}">
                 <td th:text="${schedule.id}"></td>
                 <td th:text="${schedule.trainerSubcategories.subcategory.name}"></td>
-                <td th:text="${#temporals.format(schedule.startTime, 'yyyy-MM-dd HH:mm')}"></td>
+                <td th:text="${#temporals.format(schedule.startTime, 'dd.MM.yyyy HH:mm')}"></td>
                 <td th:text="${schedule.duration}"></td>
                 <td th:text="${schedule.maxParticipants}"></td>
                 <td th:text="${schedule.hallNumber}"></td>

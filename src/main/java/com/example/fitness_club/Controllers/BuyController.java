@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
+import org.springframework.security.core.Authentication;
 import java.util.List;
 
 @Controller
@@ -38,27 +38,33 @@ public class BuyController {
     @PostMapping("/buy")
     public String buySubscription(@RequestParam("subscriptionId") Integer subscriptionId,
                                   @RequestParam("paymentMethod") String paymentMethod,
-                                  RedirectAttributes redirectAttributes) {
+                                  RedirectAttributes redirectAttributes,
+                                  Authentication authentication) {
         // Получение текущего пользователя из SecurityContext
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        if (authentication.getAuthorities().stream().anyMatch(role -> role.getAuthority().equals("ROLE_TRAINER"))) {
+            redirectAttributes.addFlashAttribute("error", "Тренер не может приобретать абонемент");
+            return "redirect:/account";
+        }
+        authentication = SecurityContextHolder.getContext().getAuthentication();
         String phoneNumber = authentication.getName();
         Users user = usersRepository.findByPhoneNumber(phoneNumber).orElse(null);
 
         if (user == null) {
-            redirectAttributes.addFlashAttribute("errorMessage", "Пользователь не найден.");
+            redirectAttributes.addFlashAttribute("error", "Пользователь не найден.");
             return "redirect:/subscriptions/buy-subscription";
         }
 
         Subscription subscription = subscriptionRepository.findById(subscriptionId).orElse(null);
         if (subscription == null) {
-            redirectAttributes.addFlashAttribute("errorMessage", "Выбранный абонемент не найден.");
+            redirectAttributes.addFlashAttribute("error", "Выбранный абонемент не найден.");
             return "redirect:/subscriptions/buy-subscription";
         }
 
         // Создаем связь UserSubscription
         userSubscriptionService.addUserSubscription(user.getId(), subscriptionId);
 
-        redirectAttributes.addFlashAttribute("successMessage", "Абонемент успешно приобретен!");
+        redirectAttributes.addFlashAttribute("message", "Абонемент успешно приобретен!");
         return "redirect:/account";
     }
 }

@@ -16,4 +16,5 @@ public interface UsersRepository extends JpaRepository<Users, Long> {
             "JOIN Trainers t ON ut.trainer.id = t.id " +
             "WHERE t.id = :trainerId")
     List<Users> findUsersByTrainerId(@Param("trainerId") Long trainerId);
+
 }

@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="ru" data-bs-theme="dark">
+<head>
+  <th:block th:insert="~{blocks/head_block :: head}"></th:block>
+  <style>
+    .gradient-bg {
+      background: #EE57BE;
+      background: linear-gradient(225deg, #EE57BE, #64BDBE);
+      color: white; /* Устанавливаем цвет текста белым */
+      border: none; /* Убираем стандартные границы карточки */
+    }
+    .gradient-bg .card-body {
+      color: white; /* Цвет текста внутри карточки */
+    }
+
+  </style>
+</head>
+<body class="d-flex flex-column min-vh-100">
+
+<!-- Вставка хедера -->
+<th:block th:insert="~{blocks/header :: header}"></th:block>
+
+<main>
+  <div class="container mt-4">
+    <h3 class="mb-4">Список соревнований</h3>
+    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+      <!-- Карточка соревнования -->
+      <div class="col" th:each="competition : ${competitions}">
+        <div class="card h-100 shadow-sm gradient-bg">
+          <div class="card-body">
+            <!-- Название соревнования -->
+            <h5 class="card-title text-white" th:text="${competition.name}"></h5>
+            <div><strong>Дата:</strong><p class="card-text text-white" th:text="${#temporals.format(competition.date, 'dd.MM.yyyy HH:mm')}"></p></div>
+            <br>
+
+            <!-- Описание соревнования -->
+            <p class="card-text text-white" th:text="${competition.description}"></p>
+
+            <!-- Победители -->
+            <h6 class="text-white">Победители:</h6>
+            <ul>
+              <li><strong class="badge bg-danger" th:text="'1 место (' + ${competition.first_winner_prize} + ')'"></strong></li>
+              <span class="badge bg-success" th:text="${competition.first_winner}"></span>
+              <li><strong class="badge bg-danger" th:text="'2 место (' + ${competition.second_winner_prize} + ')'"></strong></li>
+              <span class="badge bg-success" th:text="${competition.second_winner}"></span>
+              <li><strong class="badge bg-danger" th:text="'3 место (' + ${competition.third_winner_prize} + ')'"></strong></li>
+              <span class="badge bg-success" th:text="${competition.third_winner}"></span>
+            </ul>
+
+            <!-- Ответственный тренер -->
+            <p><strong class="text-white">Тренер:</strong> <span th:text="${competition.trainer.name} + ' ' + ${competition.trainer.surname}"></span></p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+
+<th:block th:insert="~{blocks/footer :: footer}"></th:block>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

@@ -8,6 +8,7 @@ import com.example.fitness_club.Repositories.*;
 import com.example.fitness_club.Services.EmailService;
 import com.example.fitness_club.Services.PasswordGenerator;
 import com.example.fitness_club.Services.UserSubscriptionService;
+import jakarta.mail.SendFailedException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -21,6 +22,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -49,6 +51,20 @@ public class AdminTrainersController {
         return "admin_panel_pages/admin_trainers";
 
     }
+    @GetMapping("/search")
+    public String searchTrainersByName(@RequestParam(name = "name", required = false) String name, Model model) {
+        List<Trainers> trainers;
+
+        if (name == null || name.isEmpty()) {
+            trainers = trainerRepository.findAll(); // Если имя не указано, возвращаем всех тренеров
+        } else {
+            trainers = trainerRepository.findByNameContainingIgnoreCase(name); // Поиск по имени
+        }
+
+        model.addAttribute("trainers", trainers);
+        model.addAttribute("searchQuery", name);
+        return "admin_panel_pages/admin_trainers";
+    }
 
     @GetMapping("/add")
     public String addTrainer(Model model) {
@@ -67,6 +83,7 @@ public class AdminTrainersController {
                              @RequestParam("email") String email,
                              @RequestParam("description") String description,
                              @RequestParam("yearsOfExperience") int yearsOfExperience,
+                             @RequestParam("is_on_main") boolean isOnMain,
                              @RequestParam(value = "addedSubcategories", required = false) String addedSubcategories,
                              Model model
                              ){
@@ -76,6 +93,7 @@ public class AdminTrainersController {
         trainer.setSurname(surname);
         trainer.setDescription(description);
         trainer.setYearsOfExperience(yearsOfExperience);
+        trainer.setIs_on_main(isOnMain);
 
         try {
             if (trainerRepository.findByPhoneNumber(phoneNumber).isPresent()) {
@@ -86,7 +104,13 @@ public class AdminTrainersController {
             String encodedPassword = passwordEncoder.encode(password);
 
             // Отправка пароля на email
-            emailService.sendEmail(email, "Fitness - ваш пароль", password);
+            try {
+                emailService.sendEmail(email, "Fitness - ваш пароль", password);
+            } catch (Exception e) {
+                model.addAttribute("error", "Ошибка при отправке письма (возможно не правильный email): " + e.getMessage());
+                return addTrainer(model); // Возвращаем пользователя на страницу регистрации
+            }
+
             trainer.setEmail(email);
             trainer.setPassword(encodedPassword);
 
@@ -110,7 +134,7 @@ public class AdminTrainersController {
         } catch (IOException e) {
             model.addAttribute("error", "Ошибка загрузки фото: " + e.getMessage());
             return addTrainer(model); // Возвращаем пользователя на страницу регистрации
-        } catch (Exception e) {
+        }  catch (Exception e) {
             model.addAttribute("error", "Ошибка регистрации тренера: " + e.getMessage());
             return addTrainer(model); // Возвращаем пользователя на страницу регистрации
         }
@@ -173,6 +197,7 @@ public class AdminTrainersController {
             @RequestParam("yearsOfExperience") int yearsOfExperience,
             @RequestParam("photo") MultipartFile photo,
             @RequestParam("email") String email,
+            @RequestParam("is_on_main") boolean isOnMain,
             @RequestParam(value = "addedSubcategories", required = false) String addedSubcategories,
             @RequestParam(value = "removedSubcategories", required = false) String removedSubcategories,
             RedirectAttributes redirectAttributes) {
@@ -191,6 +216,7 @@ public class AdminTrainersController {
         trainer.setDescription(description);
         trainer.setYearsOfExperience(yearsOfExperience);
         trainer.setEmail(email);
+        trainer.setIs_on_main(isOnMain);
 
         // Обрабатываем фото
         if (!photo.isEmpty()) {
@@ -214,11 +240,15 @@ public class AdminTrainersController {
         trainerRepository.save(trainer);
 
         // Удаляем подкатегории
-        if (removedSubcategories != null && !removedSubcategories.isEmpty()) {
-            List<Long> subcategoryIds = Arrays.stream(removedSubcategories.split(","))
-                    .map(Long::valueOf)
-                    .toList();
-            trainerSubcategoriesRepository.deleteByTrainerIdAndSubcategoryIds(id, subcategoryIds);
+        try {
+            if (removedSubcategories != null && !removedSubcategories.isEmpty()) {
+                List<Long> subcategoryIds = Arrays.stream(removedSubcategories.split(","))
+                        .map(Long::valueOf)
+                        .toList();
+                trainerSubcategoriesRepository.deleteByTrainerIdAndSubcategoryIds(id, subcategoryIds);
+            }
+        }catch (Exception e) {
+            redirectAttributes.addFlashAttribute("error", "Ошибка удаления подкатегорий(скорее всего связано с тем что у тренера были групповые занятия с этой подкатегорией): " + e.getMessage());
         }
 
         // Добавляем подкатегории

@@ -31,6 +31,8 @@ public class HomePagesController {
     private SubscriptionRepository subscriptionRepository;
     @Autowired
     private UsersRepository usersRepository;
+    @Autowired
+    private CompetitionsRepository competitionsRepository;
 
     @GetMapping
     public String HomePage(Model model) {
@@ -42,7 +44,7 @@ public class HomePagesController {
     @GetMapping("/fitness")
     public String FitnessPage(Model model) {
         List<Subcategories> subcategories = subcategoryRepository.findBySpecializationId(2);
-        List<Trainers> fitnessTrainers = trainerRepository.findTrainersBySpecialization("Фитнес");
+        List<Trainers> fitnessTrainers = trainerRepository.findBySpecializationAndIsOnMainTrue("Фитнес");
 
         // Лог для проверки данных
         model.addAttribute("fitnessTrainers", fitnessTrainers);
@@ -53,7 +55,7 @@ public class HomePagesController {
     @GetMapping("/martial-arts")
     public String MartialArtsPage(Model model) {
         List<Subcategories> subcategories = subcategoryRepository.findBySpecializationId(1);
-        List<Trainers> fitnessTrainers = trainerRepository.findTrainersBySpecialization("Единоборства");
+        List<Trainers> fitnessTrainers = trainerRepository.findBySpecializationAndIsOnMainTrue("Единоборства");
         List<GroupSchedule> groupSchedules = groupScheduleRepository.findBySpecialization("Единоборства");
         model.addAttribute("groupSchedules", groupSchedules);
         model.addAttribute("fitnessTrainers", fitnessTrainers);
@@ -64,12 +66,19 @@ public class HomePagesController {
     @GetMapping("/group-programs")
     public String GroupProgramsPage(Model model) {
         List<Subcategories> subcategories = subcategoryRepository.findBySpecializationId(3);
-        List<Trainers> fitnessTrainers = trainerRepository.findTrainersBySpecialization("Групповые программы");
+        List<Trainers> fitnessTrainers = trainerRepository.findBySpecializationAndIsOnMainTrue("Групповые программы");
         List<GroupSchedule> groupSchedules = groupScheduleRepository.findBySpecialization("Групповые программы");
         model.addAttribute("groupSchedules", groupSchedules);
         model.addAttribute("fitnessTrainers", fitnessTrainers);
         model.addAttribute("subcategories", subcategories);
         return "group_programs_page";
+    }
+
+    @GetMapping("/competitions")
+    public String CompetitionsPage(Model model) {
+        List<Competitions> competitions = competitionsRepository.findAll();
+        model.addAttribute("competitions", competitions);
+        return "competitions_page";
     }
 
     @GetMapping("/account")

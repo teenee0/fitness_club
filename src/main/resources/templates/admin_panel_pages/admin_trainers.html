@@ -7,13 +7,22 @@
 <th:block th:insert="~{admin_panel_blocks/header :: header}"></th:block>
 <main>
     <div class="container mt-4">
-        <div class="row">
         <h1 class="mb-4">Управление тренерами</h1>
+        <form action="/admin/trainers/search" method="get" class="mb-4">
+            <div class="input-group">
+                <input type="text" name="name" class="form-control" placeholder="Введите имя тренера"
+                       th:value="${searchQuery}" />
+                <button class="btn btn-primary" type="submit">Поиск</button>
+            </div>
+        </form>
+        <div class="row">
+
             <div class="col-md-4 mb-3 d-flex justify-content-center align-items-center">
                 <a href="/admin/trainers/add" class="btn btn-success shadow-sm" style="height: 100%; width: 100%; display: flex; align-items: center; justify-content: center;">
                     <span style="font-size: 2rem; font-weight: bold;">+</span>
                 </a>
             </div>
+
         <div class="col-md-4 mb-3" th:each="trainer : ${trainers}">
             <a th:href="@{/admin/trainers/{id}(id=${trainer.id})}" style="text-decoration: none; color: inherit;">
                 <div class="card mb-4 shadow-sm" style="height: 100%; display: flex; flex-direction: column;">

@@ -1,7 +1,21 @@
 <!doctype html>
 <html lang="ru" data-bs-theme="dark">
-<th:block th:insert="~{blocks/head_block :: head}"></th:block>
-<body class="d-flex flex-column min-vh-100">
+<head>
+    <th:block th:insert="~{blocks/head_block :: head}"></th:block>
+    <style>
+        .gradient-bg {
+            background: #EE57BE;
+            background: linear-gradient(225deg, #EE57BE, #64BDBE);
+            color: white; /* Устанавливаем цвет текста белым */
+            border: none; /* Убираем стандартные границы карточки */
+        }
+        .gradient-bg .card-body {
+            color: white; /* Цвет текста внутри карточки */
+        }
+
+    </style>
+</head>
+<body class="d-grid flex-column min-vh-100">
 
 <!-- Вставка хедера -->
 <th:block th:insert="~{blocks/header :: header}"></th:block>
@@ -27,7 +41,7 @@
         <!-- Карточка тренера -->
         <div class="col-md-4 mb-3" th:each="trainer : ${fitnessTrainers}">
 <!--            <a th:href="@{/trainers/{id}(id=${trainer.id})}" style="text-decoration: none; color: inherit;">-->
-                <div class="card mb-4 shadow-sm" style="height: 100%; display: flex; flex-direction: column;">
+                <div class="card mb-4 shadow-sm gradient-bg" style="height: 100%; display: flex; flex-direction: column;">
                     <!-- Динамическое изображение -->
                     <img class="card-img-top" th:src="@{/img/Trainers/__${trainer.photoPath}__}" style="height: 300px; object-fit: cover;">
 

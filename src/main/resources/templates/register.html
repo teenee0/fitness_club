@@ -30,9 +30,10 @@
         <p class="success-message" th:if="${message}" th:text="${message}"></p>
         <p class="error-message" th:if="${error}" th:text="${error}"></p>
 
+
         <div class="form-floating mb-2">
-            <input type="text" name="phone_number" class="form-control" id="floatingUsername" placeholder="Номер телефона" required>
-            <label for="floatingUsername">Номер телефона</label>
+            <input type="text" name="phone_number" id="phone" class="form-control"  placeholder="Номер телефона" required>
+            <label for="phone">Номер телефона</label>
         </div>
 
         <div class="form-floating mb-2">
@@ -71,6 +72,15 @@
 </main>
 
 <th:block th:insert="~{blocks/footer :: footer}"></th:block>
+<script src="https://unpkg.com/imask"></script>
+<script>
+    // Инициализация маски для российского номера телефона
+    const phoneMask = IMask(
+        document.getElementById('phone'), {
+            mask: '+{7} (000) 000-00-00'
+        }
+    );
+</script>
 
 </body>
 </html>

@@ -9,6 +9,12 @@
 <main>
     <div class="container mt-4">
         <h3>Список подкатегорий</h3>
+        <form action="/admin/subcategories/search" method="get" class="mb-4">
+            <div class="input-group">
+                <input type="text" name="name" class="form-control" placeholder="Введите название подкатегории"/>
+                <button class="btn btn-primary" type="submit">Поиск</button>
+            </div>
+        </form>
         <table class="table table-bordered">
             <thead>
             <tr>

@@ -15,6 +15,29 @@
            class="btn btn-success btn-lg w-100 mt-3 mb-3 d-flex align-items-center justify-content-center">
             <span class="me-2">+</span> Добавить пользователя
         </a>
+
+        <!-- Фильтры -->
+        <form action="/admin/users" method="get" class="mb-3">
+            <div class="row">
+                <div class="col">
+                    <input type="text" name="name" class="form-control" placeholder="Поиск по имени">
+                </div>
+                <div class="col">
+                    <input type="text" id="phone" name="phoneNumber" class="form-control" placeholder="Поиск по номеру телефона">
+                </div>
+                <div class="col">
+                    <select name="role" class="form-select">
+                        <option value="">Все роли</option>
+                        <option value="CLIENT">Клиент</option>
+                        <option value="ADMIN">Администратор</option>
+                    </select>
+                </div>
+                <div class="col">
+                    <button type="submit" class="btn btn-primary w-100">Поиск</button>
+                </div>
+            </div>
+        </form>
+
         <table class="table table-bordered">
             <thead>
             <tr>
@@ -38,7 +61,7 @@
                         <input th:value="${user.name}" type="text" class="form-control" name="name" required />
                     </td>
                     <td>
-                        <input th:value="${user.phoneNumber}" type="text" class="form-control" name="phoneNumber" required />
+                        <input th:value="${user.phoneNumber}" type="text" id="phone" class="form-control" name="phoneNumber" required />
                     </td>
                     <td>
                         <input th:value="${user.role}" type="text" class="form-control" readonly />
@@ -84,6 +107,15 @@
 <th:block th:insert="~{blocks/footer :: footer}"></th:block>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://unpkg.com/imask"></script>
+<script>
+    // Инициализация маски для российского номера телефона
+    const phoneMask = IMask(
+        document.getElementById('phone'), {
+            mask: '+{7} (000) 000-00-00'
+        }
+    );
+</script>
 
 
 </body>

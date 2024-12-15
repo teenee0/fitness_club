@@ -37,7 +37,7 @@
                         </tr>
                         <tr>
                             <td>Телефон</td>
-                            <td><input th:value="${trainer.phoneNumber}" type="text" class="form-control" name="number"
+                            <td><input th:value="${trainer.phoneNumber}" type="text" class="form-control" id="phone" name="number"
                                        required></td>
                         </tr>
                         <tr>
@@ -56,6 +56,13 @@
                             <td>Стаж (лет)</td>
                             <td><input th:value="${trainer.yearsOfExperience}" type="number" class="form-control"
                                        name="yearsOfExperience" min="0"></td>
+                        </tr>
+                        <tr>
+                            <td>Отображение тренера</td>
+                            <td><select name="is_on_main" class="form-select">
+                                <option th:value="true" th:selected="${trainer.is_on_main}">Да</option>
+                                <option th:value="false" th:selected="${!trainer.is_on_main}">Нет</option>
+                            </select></td>
                         </tr>
                     </table>
                 </div>
@@ -152,7 +159,15 @@
         document.getElementById('addedSubcategories').value = Array.from(addedSubcategories).join(',');
         document.getElementById('removedSubcategories').value = Array.from(removedSubcategories).join(',');
     }
-
+</script>
+<script src="https://unpkg.com/imask"></script>
+<script>
+    // Инициализация маски для российского номера телефона
+    const phoneMask = IMask(
+        document.getElementById('phone'), {
+            mask: '+{7} (000) 000-00-00'
+        }
+    );
 </script>
 
 </body>
