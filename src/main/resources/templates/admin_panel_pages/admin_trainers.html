@@ -1,6 +1,20 @@
 <!doctype html>
 <html lang="ru" data-bs-theme="dark">
-<th:block th:insert="~{blocks/head_block :: head}"></th:block>
+<head>
+    <th:block th:insert="~{blocks/head_block :: head}"></th:block>
+    <style>
+        .gradient-bg {
+            background: #EE57BE;
+            background: linear-gradient(225deg, #EE57BE, #64BDBE);
+            color: white; /* Устанавливаем цвет текста белым */
+            border: none; /* Убираем стандартные границы карточки */
+        }
+        .gradient-bg .card-body {
+            color: white; /* Цвет текста внутри карточки */
+        }
+
+    </style>
+</head>
 <body class="d-flex flex-column min-vh-100">
 
 <!-- Вставка хедера -->
@@ -25,7 +39,7 @@
 
         <div class="col-md-4 mb-3" th:each="trainer : ${trainers}">
             <a th:href="@{/admin/trainers/{id}(id=${trainer.id})}" style="text-decoration: none; color: inherit;">
-                <div class="card mb-4 shadow-sm" style="height: 100%; display: flex; flex-direction: column;">
+                <div class="card mb-4 shadow-sm gradient-bg" style="height: 100%; display: flex; flex-direction: column;">
                     <!-- Динамическое изображение -->
                     <img class="card-img-top" th:src="@{/img/Trainers/__${trainer.photoPath}__}" style="height: 300px; object-fit: cover;">
 
@@ -34,12 +48,27 @@
                         <h5 class="card-title" th:text="${trainer.name} + ' ' + ${trainer.surname}" style="margin-bottom: 10px;">Имя Фамилия</h5>
 
                         <!-- Описание тренера -->
-                        <p class="card-text" th:text=" 'id: ' + ${trainer.id}" style="margin-bottom: 10px;">Описание тренера</p>
+                        <!--                        <p class="card-text" th:text="${trainer.description}" style="margin-bottom: 10px;">Описание тренера</p>-->
 
                         <!-- Стаж тренера -->
                         <p class="card-text" style="margin-bottom: 10px;">Стаж:
                             <span class="badge bg-success" th:text="${trainer.yearsOfExperience} + ' лет'" style="font-size: 90%;"></span>
                         </p>
+
+                        <!-- Подкатегории тренера -->
+                        <div class="card-text" style="min-height: 60px;">
+                        <span th:each="ts, iterStat : ${trainer.trainerSubcategories}"
+<!--                              th:if="${iterStat.index < 5}"-->
+                              class="badge bg-success"
+                              th:text="${ts.subcategory.name}"
+                              style="margin-right: 5px; margin-bottom: 5px;">
+                        </span>
+                            <!-- Пустые места, если навыков меньше 5 -->
+                            <span th:each="emptySlot, iterStat : ${#numbers.sequence(trainer.trainerSubcategories.size(), 5)}"
+                                  style="margin-right: 5px; margin-bottom: 5px; visibility: hidden;">
+
+                        </span>
+                        </div>
                     </div>
                 </div>
             </a>

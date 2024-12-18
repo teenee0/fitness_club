@@ -1,4 +1,4 @@
-package com.example.fitness_club.Security;
+package com.example.fitness_club.Config;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;

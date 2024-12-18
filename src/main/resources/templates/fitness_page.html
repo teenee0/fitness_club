@@ -28,9 +28,9 @@
         </div>
         <div class="col-md-6">
             <p class="lead">Наши фитнес программы включают в себя широкий спектр занятий: от кардио тренировок до функциональных упражнений. Присоединяйтесь и улучшайте свою физическую форму!</p>
-            <ul class="list-unstyled">
-                <li  th:each="subcategory : ${subcategories}" ><p class="badge bg-danger" th:text="${subcategory.name}"></p></li>
-            </ul>
+            <div class="d-flex flex-wrap gap-2">
+                <span class="badge bg-danger" th:each="subcategory : ${subcategories}" th:text="${subcategory.name}"></span>
+            </div>
 <!--            <a href="#" class="btn btn-primary mt-3">Записаться на тренировку</a>-->
         </div>
     </div>
